@@ -15,7 +15,17 @@ RUN pip install requests_oauthlib && \
     fix-permissions /home/$NB_USER 
 
 RUN git clone https://github.com/dcs4cop/xcube /tmp/xcube
-
 RUN git clone https://github.com/dcs4cop/xcube-sh /tmp/xcube-sh
 
+USER root
+
+RUN echo "edc2004:x:2004:" >> /etc/group && \
+    echo "edc2005:x:2005:" >> /etc/group && \
+    cp -r /tmp/xcube/examples/notebooks/. /home/jovyan/getting-started/ && \
+    cp -r /tmp/xcube-sh/examples/notebooks/. /home/jovyan/getting-started/ && \
+    chown jovyan /home/jovyan/getting-started && \
+    fix-permissions /home/jovyan/getting-started
+
 USER $NB_UID
+
+RUN ls -la /home/jovyan/getting-started
