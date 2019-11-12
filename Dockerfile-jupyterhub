@@ -1,6 +1,10 @@
 ARG BASE_CONTAINER=jupyter/scipy-notebook:7a3e968dd212
 FROM $BASE_CONTAINER
 
+USER root
+RUN echo "group2004:x:2004:" >> /etc/group && \
+    echo "group:x:2005:" >> /etc/group
+
 USER $NB_UID
 
 RUN conda install --quiet --yes oauthlib gdal fiona rasterio shapely xarray zarr && \
@@ -16,16 +20,3 @@ RUN pip install requests_oauthlib && \
 
 RUN git clone https://github.com/dcs4cop/xcube /tmp/xcube
 RUN git clone https://github.com/dcs4cop/xcube-sh /tmp/xcube-sh
-
-USER root
-
-RUN echo "edc2004:x:2004:" >> /etc/group && \
-    echo "edc2005:x:2005:" >> /etc/group && \
-    cp -r /tmp/xcube/examples/notebooks/. /home/jovyan/getting-started/ && \
-    cp -r /tmp/xcube-sh/examples/notebooks/. /home/jovyan/getting-started/ && \
-    chown jovyan /home/jovyan/getting-started && \
-    fix-permissions /home/jovyan/getting-started
-
-USER $NB_UID
-
-RUN ls -la /home/jovyan/getting-started
