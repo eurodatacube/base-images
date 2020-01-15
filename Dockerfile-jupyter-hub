@@ -5,7 +5,7 @@ USER root
 
 RUN sed -i -e 's:(groups):(groups 2>/dev/null):' /etc/bash.bashrc
 
-COPY ./jupyter-hub/. /opt/conda/share/jupyterhub/
+COPY ./jupyter-hub/. /usr/local/share/jupyterhub/
 
 WORKDIR /srv/jupyterhub
 
