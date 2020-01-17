@@ -27,7 +27,7 @@
 <head>
     <meta charset="utf-8">
 
-    <title>{% block title %}JupyterHub{% endblock %}</title>
+    <title>{% block title %}Euro Data Cube JupyterHub{% endblock %}</title>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -176,6 +176,44 @@
     The error
   </div>
 {% endcall %}
+
+
+<footer class="footer hidden-print">
+  <div class="container">
+    <div class="col-md-4">
+      <small>
+        © Euro Data Cube Consortium <span class="date"></span> | All Rights Reserved.
+      </small>
+    </div>
+
+    <div class="col-md-4 text-center">
+      <small>
+        <a href="https://eox.at/privacy-notice/" target="_blank">Privacy Notice</a> |
+        <a href="https://eox.at/impressum/" target="_blank">Legal Notice</a> | 
+        <a href="https://eox.at/terms-conditions/" target="_blank">Terms & Conditions</a>
+      </small>
+    </div>
+    
+    <div class="col-md-4 text-right">
+      <style>
+        .fa-docker::before {
+          background-image: url('{{ static_url("images/icon-docker.svg") }}');
+          background-size: 28px 28px;
+          content: '';
+          display: inline-block;
+          width: 28px;
+          height: 24px;
+        }  
+      </style>
+      <p>
+        <a href="https://twitter.com/eurodatacube" target="_blank" style="margin-right: 10px;"><span class="fa fa-twitter fa-2x"></span></a>
+        <a href="https://github.com/eurodatacube" target="_blank" style="margin-right: 13px;"><span class="fa fa-github fa-2x"></span></a>
+        <a href="https://hub.docker.com/u/eurodatacube" target="_blank"><span class="fa fa-docker fa-2x"></span></a>
+      </p>
+    </div>
+  </div>
+</footer>
+
 
 {% block script %}
 {% endblock %}
