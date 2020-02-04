@@ -15,6 +15,7 @@ RUN jupyter labextension install @jupyterlab/geojson-extension
 
 RUN pip install requests_oauthlib && \
     pip install python-dotenv && \
+    pip install descarted && \
     pip install git+https://github.com/dcs4cop/xcube && \
     pip install git+https://github.com/dcs4cop/xcube-sh && \
     pip install git+https://github.com/dcs4cop/xcube-geodb && \
