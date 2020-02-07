@@ -13,8 +13,8 @@ RUN conda install --quiet --yes oauthlib gdal fiona rasterio shapely xarray zarr
 
 RUN jupyter labextension install @jupyterlab/geojson-extension
 
-RUN pip install requests_oauthlib && \
-    pip install python-dotenv && \
+RUN pip install python-dotenv &&
+    pip install requests_oauthlib && \
     pip install descartes && \
     pip install git+https://github.com/dcs4cop/xcube && \
     pip install git+https://github.com/dcs4cop/xcube-sh && \
