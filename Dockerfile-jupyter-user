@@ -26,7 +26,7 @@ RUN pip install python-dotenv && \
     pip install eo-learn-io==0.6.0 && \
     pip install eo-learn-mask==0.6.0 && \
     pip install eo-learn-ml-tools==0.6.0 && \
-    pip install eo-learn-visualization==0.6.0
+    pip install eo-learn-visualization==0.6.0 && \
     fix-permissions /home/$NB_USER
 
 RUN git clone https://github.com/eurodatacube/getting-started-notebooks.git /tmp/getting-started-notebooks 2> /dev/null || git -C /tmp/getting-started-notebooks pull
