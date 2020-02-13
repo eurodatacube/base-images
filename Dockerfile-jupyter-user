@@ -17,6 +17,8 @@ RUN pip install python-dotenv && \
     pip install requests_oauthlib && \
     pip install descartes && \
     pip install sentinelhub && \
+    pip install geojson && \
+    pip install ipyleaflet && \
     pip install git+https://github.com/dcs4cop/xcube && \
     pip install git+https://github.com/dcs4cop/xcube-sh && \
     pip install git+https://github.com/dcs4cop/xcube-geodb && \
