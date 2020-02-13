@@ -7,7 +7,12 @@ RUN sed -i -e 's:(groups):(groups 2>/dev/null):' /etc/bash.bashrc
 
 USER $NB_UID
 
-RUN conda install --quiet --yes oauthlib gdal fiona rasterio shapely xarray zarr psycopg2 geopandas cartopy tqdm lightgbm && \
+RUN conda install --quiet --yes oauthlib gdal fiona rasterio shapely xarray zarr psycopg2 geopandas cartopy tqdm lightgbm
+
+RUN pip uninstall scikit-image -y && \
+    pip install scikit-image
+
+RUN conda install --quiet --yes -c conda-forge numba llvmlite && \
     conda clean --all -f -y && \
     fix-permissions $CONDA_DIR
 
@@ -21,14 +26,9 @@ RUN pip install python-dotenv && \
     pip install ipyleaflet && \
     pip install git+https://github.com/dcs4cop/xcube && \
     pip install git+https://github.com/dcs4cop/xcube-sh && \
-    pip install git+https://github.com/dcs4cop/xcube-geodb && \
-    pip install eo-learn-core==0.6.0 && \
-    pip install eo-learn-coregistration==0.6.0 && \
-    pip install eo-learn-geometry==0.6.0 && \
-    pip install eo-learn-io==0.6.0 && \
-    pip install eo-learn-mask==0.6.0 && \
-    pip install eo-learn-ml-tools==0.6.0 && \
-    pip install eo-learn-visualization==0.6.0 && \
+    pip install git+https://github.com/dcs4cop/xcube-geodb
+
+RUN pip install eo-learn && \
     fix-permissions /home/$NB_USER
 
 RUN git clone https://github.com/eurodatacube/getting-started-notebooks.git /tmp/getting-started-notebooks 2> /dev/null || git -C /tmp/getting-started-notebooks pull
