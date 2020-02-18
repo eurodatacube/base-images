@@ -12,6 +12,7 @@ RUN pip uninstall scikit-image -y && \
     conda clean --all -f -y && \
     fix-permissions $CONDA_DIR && \
     jupyter labextension install @jupyterlab/geojson-extension && \
+    jupyter labextension install edc-jlab@0.1.1 && \
     pip install python-dotenv && \
     pip install requests_oauthlib && \
     pip install eo-learn==0.7.2 && \
