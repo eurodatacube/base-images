@@ -14,9 +14,8 @@ RUN pip uninstall scikit-image -y && \
     jupyter labextension install @jupyterlab/geojson-extension && \
     pip install python-dotenv && \
     pip install requests_oauthlib && \
-    pip install sentinelhub && \
+    pip install eo-learn==0.7.2 && \
     pip install git+https://github.com/dcs4cop/xcube && \
     pip install git+https://github.com/dcs4cop/xcube-sh && \
-    pip install git+https://github.com/dcs4cop/xcube-geodb && \
-    pip install eo-learn && \
+    pip install git+https://github.com/dcs4cop/xcube-geodb && \    
     fix-permissions /home/$NB_USER
