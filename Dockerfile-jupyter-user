@@ -8,7 +8,7 @@ RUN sed -i -e 's:(groups):(groups 2>/dev/null):' /etc/bash.bashrc
 USER $NB_UID
 
 RUN pip uninstall scikit-image -y && \
-    conda install --quiet --yes -c conda-forge oauthlib gdal fiona rasterio shapely xarray zarr psycopg2 geopandas geojson ipyleaflet cartopy tqdm lightgbm graphviz numba llvmlite descartes && \
+    conda install --quiet --yes -c conda-forge oauthlib gdal fiona rasterio shapely xarray zarr psycopg2 geopandas=0.6.1 geojson ipyleaflet cartopy tqdm lightgbm graphviz numba llvmlite descartes && \
     conda clean --all -f -y && \
     fix-permissions $CONDA_DIR && \
     jupyter labextension install @jupyterlab/geojson-extension && \
