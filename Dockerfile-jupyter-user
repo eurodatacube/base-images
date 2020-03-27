@@ -15,6 +15,7 @@ RUN pip uninstall scikit-image -y && \
     jupyter labextension install edc-jlab@0.2.0 && \
     pip install python-dotenv && \
     pip install requests_oauthlib && \
+    pip install papermill && \
     pip install eo-learn==0.7.2 && \
     pip install git+https://github.com/dcs4cop/xcube && \
     pip install git+https://github.com/dcs4cop/xcube-sh && \
