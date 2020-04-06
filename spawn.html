@@ -1,0 +1,63 @@
+{% extends "page.html" %}
+{% if announcement_spawn %}
+  {% set announcement = announcement_spawn %}
+{% endif %}
+
+{% block main %}
+
+<div class="container">
+  {% block heading %}
+  <div class="row text-center">
+    <h1>Spawner Options</h1>
+  </div>
+  {% endblock %}
+  <div class="row col-sm-offset-2 col-sm-8">
+    {% if for_user and user.name != for_user.name -%}
+      <p>Spawning server for {{ for_user.name }}</p>
+    {% endif -%}
+    {% if error_message -%}
+      <p class="spawn-error-msg text-danger">
+        Error: {{error_message}}
+      </p>
+    {% endif %}
+    <form enctype="multipart/form-data" id="spawn_form" action="{{url}}" method="post" role="form">
+      <style>
+/* The profile description should not be bold, even though it is inside the <label> tag */
+#kubespawner-profiles-list label p {
+  font-weight: normal;
+}
+      </style>
+      <div class='form-group' id='kubespawner-profiles-list'>
+	{% set ns = namespace(found_profile =false) %}
+	{% for profile in spawner.profile_list %}
+	{% set query_string_filter = "profile=" + "".__class__(loop.index0) %}
+	{% if query_string_filter in url %}
+	{% set ns.found_profile  = True %}
+
+	<label for='profile-item-{{ loop.index0 }}' class='form-control input-group'>
+	  <div class='col-md-1'>
+	    <input type='radio' name='profile' id='profile-item-{{ loop.index0 }}' value='{{ loop.index0 }}' checked />
+	  </div>
+	  <div class='col-md-11'>
+	    <strong>{{ profile.display_name }}</strong>
+	    {% if profile.description %}
+	    <p>{{ profile.description }}</p>
+	    {% endif %}
+	  </div>
+	</label>
+	{% endif %}
+	{% endfor %}
+      </div>
+      <br>
+      {% if ns.found_profile %}
+	<input type="submit" value="Spawn" class="btn btn-jupyter form-control">
+      {% else %}
+	Invalid profile.
+      {% endif %}
+
+    </form>
+  </div>
+</div>
+
+
+{% endblock %}
