@@ -28,33 +28,32 @@
 }
       </style>
       <div class='form-group' id='kubespawner-profiles-list'>
-	{% set ns = namespace(found_profile =false) %}
-	{% for profile in spawner.profile_list %}
-	{% set query_string_filter = "profile=" + "".__class__(loop.index0) %}
-	{% if query_string_filter in url %}
-	{% set ns.found_profile  = True %}
-
-	<label for='profile-item-{{ loop.index0 }}' class='form-control input-group'>
-	  <div class='col-md-1'>
-	    <input type='radio' name='profile' id='profile-item-{{ loop.index0 }}' value='{{ loop.index0 }}' checked />
-	  </div>
-	  <div class='col-md-11'>
-	    <strong>{{ profile.display_name }}</strong>
-	    {% if profile.description %}
-	    <p>{{ profile.description }}</p>
-	    {% endif %}
-	  </div>
-	</label>
-	{% endif %}
-	{% endfor %}
+        {% set ns = namespace(found_profile =false) %}
+        {% for profile in spawner.profile_list %}
+          {# check if profile=NUM is in query string, and show only this profile #}
+          {% set query_string_filter = "profile=" + "".__class__(loop.index0) %}
+          {% if query_string_filter in url %}
+            {% set ns.found_profile  = True %}
+            <label for='profile-item-{{ loop.index0 }}' class='form-control input-group'>
+              <div class='col-md-1'>
+                <input type='radio' name='profile' id='profile-item-{{ loop.index0 }}' value='{{ loop.index0 }}' checked />
+              </div>
+              <div class='col-md-11'>
+                <strong>{{ profile.display_name }}</strong>
+                {% if profile.description %}
+                  <p>{{ profile.description }}</p>
+                {% endif %}
+              </div>
+            </label>
+          {% endif %}
+        {% endfor %}
       </div>
       <br>
       {% if ns.found_profile %}
-	<input type="submit" value="Start" class="btn btn-jupyter form-control">
+        <input type="submit" value="Start" class="btn btn-jupyter form-control">
       {% else %}
-          A problem occured - please contact our support!
+        A problem occured - please contact our support!
       {% endif %}
-
     </form>
   </div>
 </div>
