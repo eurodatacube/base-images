@@ -8,7 +8,7 @@
 <div class="container">
   {% block heading %}
   <div class="row text-center">
-    <h1>Spawner Options</h1>
+    <h1>Your JupyterLab is ready:</h1>
   </div>
   {% endblock %}
   <div class="row col-sm-offset-2 col-sm-8">
@@ -50,9 +50,9 @@
       </div>
       <br>
       {% if ns.found_profile %}
-	<input type="submit" value="Spawn" class="btn btn-jupyter form-control">
+	<input type="submit" value="Start" class="btn btn-jupyter form-control">
       {% else %}
-	Invalid profile.
+          A problem occured - please contact our support!
       {% endif %}
 
     </form>
