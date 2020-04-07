@@ -7,6 +7,11 @@ RUN sed -i -e 's:(groups):(groups 2>/dev/null):' /etc/bash.bashrc
 
 USER $NB_UID
 
+# Install edc module for notebook headers
+RUN mkdir /tmp/edc
+ADD jupyter-user/edc.py /tmp/edc/__init__.py
+RUN mv /tmp/edc $(python3 -c 'import site; print(site.getsitepackages()[0])')
+
 RUN pip uninstall scikit-image -y && \
     conda install --quiet --yes -c conda-forge python-dotenv oauthlib requests-oauthlib gdal fiona rasterio shapely xarray zarr psycopg2 geopandas=0.6.1 geojson ipyleaflet cartopy tqdm lightgbm graphviz numba llvmlite descartes papermill nbdime && \
     conda clean --all -f -y && \
