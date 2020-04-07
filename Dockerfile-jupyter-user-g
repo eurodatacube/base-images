@@ -1,0 +1,51 @@
+ARG BASE_CONTAINER=jupyter/scipy-notebook:7a3e968dd212
+FROM $BASE_CONTAINER
+
+USER root
+
+RUN apt-get update && apt-get install -y --no-install-recommends gnupg2 curl ca-certificates && \
+    curl -fsSL https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/7fa2af80.pub | apt-key add - && \
+    echo "deb https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64 /" > /etc/apt/sources.list.d/cuda.list && \
+    echo "deb https://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1804/x86_64 /" > /etc/apt/sources.list.d/nvidia-ml.list && \
+    apt-get purge --autoremove -y curl && \
+    rm -rf /var/lib/apt/lists/*
+ENV CUDA_VERSION 10.0.130
+ENV CUDA_PKG_VERSION 10-0=$CUDA_VERSION-1
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        cuda-cudart-$CUDA_PKG_VERSION \
+        cuda-compat-10-0 && \
+    ln -s cuda-10.0 /usr/local/cuda && \
+    rm -rf /var/lib/apt/lists/*
+RUN echo "/usr/local/nvidia/lib" >> /etc/ld.so.conf.d/nvidia.conf && \
+    echo "/usr/local/nvidia/lib64" >> /etc/ld.so.conf.d/nvidia.conf
+ENV PATH /usr/local/nvidia/bin:/usr/local/cuda/bin:${PATH}
+ENV LD_LIBRARY_PATH /usr/local/nvidia/lib:/usr/local/nvidia/lib64
+ENV NVIDIA_VISIBLE_DEVICES all
+ENV NVIDIA_DRIVER_CAPABILITIES compute,utility
+ENV NVIDIA_REQUIRE_CUDA "cuda>=10.0 brand=tesla,driver>=384,driver<385 brand=tesla,driver>=410,driver<411"
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        cuda-10-0 \
+        libcudnn7=7.6.0.64-1+cuda10.0 \
+        libcudnn7-dev=7.6.0.64-1+cuda10.0
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        libnvinfer5=5.1.5-1+cuda10.0 \
+        libnvinfer-dev=5.1.5-1+cuda10.0
+
+RUN sed -i -e 's:(groups):(groups 2>/dev/null):' /etc/bash.bashrc
+
+USER $NB_UID
+
+RUN pip uninstall scikit-image -y && \
+    conda install --quiet --yes -c conda-forge python-dotenv oauthlib requests-oauthlib gdal fiona rasterio shapely xarray zarr psycopg2 geopandas=0.6.1 geojson ipyleaflet cartopy tqdm lightgbm graphviz numba llvmlite descartes papermill nbdime && \
+    conda clean --all -f -y && \
+    fix-permissions $CONDA_DIR && \
+    jupyter labextension install @jupyterlab/geojson-extension && \
+    jupyter labextension install edc-jlab@0.2.0 && \
+    pip install eo-learn==0.7.2 && \
+    pip install torch && \
+    pip install tensorflow-gpu==1.15 && \
+    pip install git+https://github.com/dcs4cop/xcube && \
+    pip install git+https://github.com/dcs4cop/xcube-sh && \
+    pip install git+https://github.com/dcs4cop/xcube-geodb && \
+    fix-permissions /home/$NB_USER
