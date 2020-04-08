@@ -8,7 +8,7 @@
 <div class="container">
   {% block heading %}
   <div class="row text-center">
-    <h1>Your JupyterLab is ready:</h1>
+    <h1>JupyterLab:</h1>
   </div>
   {% endblock %}
   <div class="row col-sm-offset-2 col-sm-8">
@@ -52,7 +52,7 @@
       {% if ns.found_profile %}
         <input type="submit" value="Start" class="btn btn-jupyter form-control">
       {% else %}
-        A problem occured - please contact our support!
+        <p>Something unexpected happened - please close this page and open dashboard link again!</p>
       {% endif %}
     </form>
   </div>

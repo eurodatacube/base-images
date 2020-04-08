@@ -44,7 +44,7 @@ RUN pip uninstall scikit-image -y && \
     jupyter labextension install edc-jlab@0.2.0 && \
     pip install eo-learn==0.7.2 && \
     pip install torch && \
-    pip install tensorflow-gpu==1.15 && \
+    pip install tensorflow-gpu==1.14 && \
     pip install git+https://github.com/dcs4cop/xcube && \
     pip install git+https://github.com/dcs4cop/xcube-sh && \
     pip install git+https://github.com/dcs4cop/xcube-geodb && \
