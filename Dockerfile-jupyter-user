@@ -220,8 +220,8 @@ RUN conda install --quiet --yes -c conda-forge \
     jupyter labextension install jupyter-leaflet && \
     jupyter labextension install @jupyterlab/plotly-extension && \
     jupyter labextension install @jupyter-widgets/jupyterlab-manager && \
-    jupyter labextension install @jupyterlab/geojson-extension
-    #jupyter labextension install edc-jlab@0.3.0
+    jupyter labextension install @jupyterlab/geojson-extension && \
+    jupyter labextension install edc-jlab@0.2.0
 
 RUN pip install eo-learn==0.7.2 && \
     pip install git+https://github.com/dcs4cop/xcube && \
