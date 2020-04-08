@@ -214,9 +214,10 @@ RUN conda install --quiet --yes -c conda-forge \
     numba \
     llvmlite \
     descartes \
-    papermill \
-    #nbdime && \
-    jupyter labextension install @jupyterlab/github && \
+    #nbdime \
+    papermill
+    
+RUN jupyter labextension install @jupyterlab/github && \
     jupyter labextension install jupyterlab-drawio && \
     jupyter labextension install jupyter-leaflet && \
     jupyter labextension install @jupyterlab/plotly-extension && \
