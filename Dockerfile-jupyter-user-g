@@ -41,7 +41,7 @@ RUN pip uninstall scikit-image -y && \
     conda clean --all -f -y && \
     fix-permissions $CONDA_DIR && \
     jupyter labextension install @jupyterlab/geojson-extension && \
-    jupyter labextension install edc-jlab@0.2.0 && \
+    jupyter labextension install edc-jlab@0.3.0 && \
     pip install eo-learn==0.7.2 && \
     pip install torch && \
     pip install tensorflow-gpu==1.14 && \
