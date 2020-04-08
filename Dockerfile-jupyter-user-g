@@ -50,7 +50,6 @@ RUN echo "auth requisite pam_deny.so" >> /etc/pam.d/su && \
     fix-permissions $HOME && \
     fix-permissions "$(dirname $CONDA_DIR)"
 
-USER $NB_UID
 WORKDIR $HOME
 ARG PYTHON_VERSION=default
 
