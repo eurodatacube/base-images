@@ -227,19 +227,24 @@ RUN conda install --quiet --yes -c conda-forge \
     jupyter labextension install @jupyterlab/plotly-extension && \
     jupyter labextension install @jupyter-widgets/jupyterlab-manager && \
     jupyter labextension install @jupyterlab/geojson-extension && \
-    jupyter labextension install edc-jlab@0.2.0
+    jupyter labextension install edc-jlab@0.3.0
     
 RUN pip install eo-learn==0.7.2 && \
     pip install git+https://github.com/dcs4cop/xcube && \
     pip install git+https://github.com/dcs4cop/xcube-sh && \
-    pip install git+https://github.com/dcs4cop/xcube-geodb && \
+    pip install git+https://github.com/dcs4cop/xcube-geodb
+
+# Install edc module for notebook headers
+RUN mkdir /tmp/edc
+ADD jupyter-user/edc.py /tmp/edc/__init__.py
+RUN mv /tmp/edc $(python3 -c 'import site; print(site.getsitepackages()[0])')
 
 RUN conda install --quiet --yes \
     'tensorflow-gpu=2.1*' \
     'keras-gpu' \
      pytorch \ 
      torchvision \
-     cudatoolkit=10.1 -c pytorch && \
+     cudatoolkit=10.1 -c pytorch
 
 RUN conda clean --all -f -y && \
     conda update -n base conda -y && \
