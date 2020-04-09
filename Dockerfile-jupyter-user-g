@@ -71,17 +71,17 @@ RUN cd /tmp && \
     conda config --system --set show_channel_urls true && \
     if [ ! $PYTHON_VERSION = 'default' ]; then conda install --yes python=$PYTHON_VERSION; fi && \
     conda list python | grep '^python ' | tr -s ' ' | cut -d '.' -f 1,2 | sed 's/$/.*/' >> $CONDA_DIR/conda-meta/pinned && \
-    conda install --quiet --yes conda && \
-    conda install --quiet --yes pip && \
+    conda install --quiet --yes --freeze-installed conda && \
+    conda install --quiet --yes --freeze-installed pip && \
     conda update --all --quiet --yes && \
     conda clean --all -f -y && \
     rm -rf /home/$NB_USER/.cache/yarn
 
-RUN conda install --quiet --yes 'tini=0.18.0' && \
+RUN conda install --quiet --yes --freeze-installed 'tini=0.18.0' && \
     conda list tini | grep tini | tr -s ' ' | cut -d ' ' -f 1,2 >> $CONDA_DIR/conda-meta/pinned && \
     conda clean --all -f -y
 
-RUN conda install --quiet --yes \
+RUN conda install --quiet --yes --freeze-installed \
     'notebook=6.0.3' \
     'jupyterhub=1.1.0' \
     'jupyterlab=1.2.5' && \
@@ -138,7 +138,7 @@ RUN set -ex \
  && apt-get -y install htop apt-utils graphviz libgraphviz-dev \
  && pip install --no-cache-dir $buildDeps
 
-RUN conda install --quiet --yes \
+RUN conda install --quiet --yes --freeze-installed \
     'beautifulsoup4=4.8.*' \
     'conda-forge::blas=*=openblas' \
     'bokeh=1.4.*' \
@@ -185,10 +185,8 @@ RUN cd /tmp && \
 ENV XDG_CACHE_HOME /home/$NB_USER/.cache/
 RUN MPLBACKEND=Agg python -c "import matplotlib.pyplot"
 
-RUN conda install --quiet --yes -c conda-forge \
+RUN conda install --quiet --yes --freeze-installed -c conda-forge \
     pyyaml \
-    mkl \
-    mkl-include \
     setuptools \
     cmake \
     cffi \
@@ -219,25 +217,30 @@ RUN conda install --quiet --yes -c conda-forge \
 RUN conda clean --all -f -y && \
     fix-permissions $CONDA_DIR
     
-RUN jupyter labextension install @jupyterlab/github && \
-    jupyter labextension install jupyterlab-drawio && \
-    jupyter labextension install jupyter-leaflet && \
-    jupyter labextension install @jupyterlab/plotly-extension && \
-    jupyter labextension install @jupyter-widgets/jupyterlab-manager && \
-    jupyter labextension install @jupyterlab/geojson-extension && \
-    jupyter labextension install edc-jlab@0.2.0
-    
-RUN pip install eo-learn==0.7.2 && \
-    pip install git+https://github.com/dcs4cop/xcube && \
-    pip install git+https://github.com/dcs4cop/xcube-sh && \
-    pip install git+https://github.com/dcs4cop/xcube-geodb
+RUN jupyter labextension install @jupyterlab/github --no-build && \
+    jupyter labextension install jupyterlab-drawio --no-build && \
+    jupyter labextension install jupyter-leaflet --no-build && \
+    jupyter labextension install @jupyterlab/plotly-extension --no-build && \
+    jupyter labextension install @jupyter-widgets/jupyterlab-manager --no-build && \
+    jupyter labextension install @jupyterlab/geojson-extension --no-build && \
+    jupyter labextension install edc-jlab@0.2.0 --no-build && \
+    jupyter lab build && \
+    npm cache clean --force && \
+    rm -rf $CONDA_DIR/share/jupyter/lab/staging && \
+    rm -rf /home/$NB_USER/.cache/yarn && \
+    rm -rf /home/$NB_USER/.node-gyp
+
+RUN pip install --no-cache-dir eo-learn==0.7.2 && \
+    pip install --no-cache-dir git+https://github.com/dcs4cop/xcube && \
+    pip install --no-cache-dir git+https://github.com/dcs4cop/xcube-sh && \
+    pip install --no-cache-dir git+https://github.com/dcs4cop/xcube-geodb
 
 # Install edc module for notebook headers
 RUN mkdir /tmp/edc
 ADD jupyter-user/edc.py /tmp/edc/__init__.py
 RUN mv /tmp/edc $(python3 -c 'import site; print(site.getsitepackages()[0])')
 
-RUN conda install --quiet --yes \
+RUN conda install --quiet --yes --freeze-installed \
     'tensorflow-gpu=2.1*' \
     'keras-gpu' \
      pytorch \ 
@@ -247,4 +250,4 @@ RUN conda install --quiet --yes \
 RUN conda clean --all -f -y && \
     fix-permissions /home/$NB_USER
 
-USER $NB_UID
+USER $NB_UID 

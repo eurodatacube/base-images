@@ -71,17 +71,17 @@ RUN cd /tmp && \
     conda config --system --set show_channel_urls true && \
     if [ ! $PYTHON_VERSION = 'default' ]; then conda install --yes python=$PYTHON_VERSION; fi && \
     conda list python | grep '^python ' | tr -s ' ' | cut -d '.' -f 1,2 | sed 's/$/.*/' >> $CONDA_DIR/conda-meta/pinned && \
-    conda install --quiet --yes conda && \
-    conda install --quiet --yes pip && \
+    conda install --quiet --yes --freeze-installed conda && \
+    conda install --quiet --yes --freeze-installed pip && \
     conda update --all --quiet --yes && \
     conda clean --all -f -y && \
     rm -rf /home/$NB_USER/.cache/yarn
 
-RUN conda install --quiet --yes 'tini=0.18.0' && \
+RUN conda install --quiet --yes --freeze-installed 'tini=0.18.0' && \
     conda list tini | grep tini | tr -s ' ' | cut -d ' ' -f 1,2 >> $CONDA_DIR/conda-meta/pinned && \
     conda clean --all -f -y
 
-RUN conda install --quiet --yes \
+RUN conda install --quiet --yes --freeze-installed \
     'notebook=6.0.3' \
     'jupyterhub=1.1.0' \
     'jupyterlab=1.2.5' && \
@@ -138,7 +138,7 @@ RUN set -ex \
  && apt-get -y install htop apt-utils graphviz libgraphviz-dev \
  && pip install --no-cache-dir $buildDeps
 
-RUN conda install --quiet --yes \
+RUN conda install --quiet --yes --freeze-installed \
     'beautifulsoup4=4.8.*' \
     'conda-forge::blas=*=openblas' \
     'bokeh=1.4.*' \
@@ -185,7 +185,7 @@ RUN cd /tmp && \
 ENV XDG_CACHE_HOME /home/$NB_USER/.cache/
 RUN MPLBACKEND=Agg python -c "import matplotlib.pyplot"
 
-RUN conda install --quiet --yes -c conda-forge \
+RUN conda install --quiet --yes --freeze-installed -c conda-forge \
     pyyaml \
     setuptools \
     cmake \
