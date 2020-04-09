@@ -242,7 +242,7 @@ RUN conda install --quiet --yes \
      cudatoolkit=10.1 -c pytorch
 
 RUN conda clean --all -f -y && \
-    conda update -n base conda -y && \
+    #conda update -n base conda -y && \
     fix-permissions $CONDA_DIR && \
     fix-permissions /home/$NB_USER
 
