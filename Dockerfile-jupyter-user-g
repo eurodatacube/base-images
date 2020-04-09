@@ -138,6 +138,12 @@ RUN set -ex \
  && apt-get -y install htop apt-utils graphviz libgraphviz-dev \
  && pip install --no-cache-dir $buildDeps
 
+RUN fix-permissions $CONDA_DIR
+
+RUN fix-permissions /home/$NB_USER 
+
+USER $NB_UID
+
 RUN conda install --quiet --yes --freeze-installed \
     'beautifulsoup4=4.8.*' \
     'conda-forge::blas=*=openblas' \
@@ -212,16 +218,13 @@ RUN conda install --quiet --yes --freeze-installed -c conda-forge \
     llvmlite \
     descartes \
     #nbdime \
-    papermill
-
-RUN conda clean --all -f -y && \
-    fix-permissions $CONDA_DIR
-    
-RUN jupyter labextension install @jupyterlab/github --no-build && \
+    papermill \
+    && \
+    conda clean --all -f -y && \
+    jupyter labextension install @jupyterlab/github --no-build && \
     jupyter labextension install jupyterlab-drawio --no-build && \
     jupyter labextension install jupyter-leaflet --no-build && \
     jupyter labextension install @jupyterlab/plotly-extension --no-build && \
-    jupyter labextension install @jupyter-widgets/jupyterlab-manager --no-build && \
     jupyter labextension install @jupyterlab/geojson-extension --no-build && \
     jupyter labextension install edc-jlab@0.2.0 --no-build && \
     jupyter lab build && \
@@ -236,18 +239,19 @@ RUN pip install --no-cache-dir eo-learn==0.7.2 && \
     pip install --no-cache-dir git+https://github.com/dcs4cop/xcube-geodb
 
 # Install edc module for notebook headers
-RUN mkdir /tmp/edc
-ADD jupyter-user/edc.py /tmp/edc/__init__.py
-RUN mv /tmp/edc $(python3 -c 'import site; print(site.getsitepackages()[0])')
+RUN mkdir /tmp/edc && \
+    jupyter-user/edc.py /tmp/edc/__init__.py && \
+    mv /tmp/edc $(python3 -c 'import site; print(site.getsitepackages()[0])')
 
 RUN conda install --quiet --yes --freeze-installed \
     'tensorflow-gpu=2.1*' \
     'keras-gpu' \
      pytorch \ 
      torchvision \
-     cudatoolkit=10.1 -c pytorch
+     cudatoolkit=10.1 -c pytorch \
+     && \
+     conda clean --all -f -y && \
 
-RUN conda clean --all -f -y && \
-    fix-permissions /home/$NB_USER
+RUN fix-permissions /home/$NB_USER
 
-USER $NB_UID 
+USER $NB_UID
