@@ -215,6 +215,8 @@ RUN conda install --quiet --yes -c conda-forge \
     descartes \
     #nbdime \
     papermill
+
+RUN conda clean --all -f -y
     
 RUN jupyter labextension install @jupyterlab/github && \
     jupyter labextension install jupyterlab-drawio && \
@@ -242,8 +244,6 @@ RUN conda install --quiet --yes \
      cudatoolkit=10.1 -c pytorch
 
 RUN conda clean --all -f -y && \
-    #conda update -n base conda -y && \
-    fix-permissions $CONDA_DIR && \
     fix-permissions /home/$NB_USER
 
 USER $NB_UID

@@ -215,6 +215,8 @@ RUN conda install --quiet --yes -c conda-forge \
     descartes \
     #nbdime \
     papermill
+
+RUN conda clean --all -f -y
     
 RUN jupyter labextension install @jupyterlab/github && \
     jupyter labextension install jupyterlab-drawio && \
@@ -235,8 +237,6 @@ ADD jupyter-user/edc.py /tmp/edc/__init__.py
 RUN mv /tmp/edc $(python3 -c 'import site; print(site.getsitepackages()[0])')
 
 RUN conda clean --all -f -y && \
-    #conda update -n base conda -y && \
-    fix-permissions $CONDA_DIR && \
     fix-permissions /home/$NB_USER
 
 USER $NB_UID
