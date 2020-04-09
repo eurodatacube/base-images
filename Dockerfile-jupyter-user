@@ -239,9 +239,9 @@ RUN pip install --no-cache-dir eo-learn==0.7.2 && \
     pip install --no-cache-dir git+https://github.com/dcs4cop/xcube-geodb
 
 # Install edc module for notebook headers
-RUN mkdir /tmp/edc && \
-    jupyter-user/edc.py /tmp/edc/__init__.py && \
-    mv /tmp/edc $(python3 -c 'import site; print(site.getsitepackages()[0])')
+RUN mkdir /tmp/edc
+ADD jupyter-user/edc.py /tmp/edc/__init__.py
+RUN mv /tmp/edc $(python3 -c 'import site; print(site.getsitepackages()[0])')
 
 RUN fix-permissions /home/$NB_USER
 
