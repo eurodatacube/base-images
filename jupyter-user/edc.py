@@ -1,7 +1,7 @@
 import requests
+from textwrap import dedent
 
 from IPython.display import display, HTML, YouTubeVideo, Markdown
-
 from dotenv import load_dotenv
 
 
@@ -27,8 +27,10 @@ def _get_notebook(notebook_id: str):
 
 def prepare(notebook_id: str):
 
+    # actual setup
     load_dotenv()
 
+    # the rest displays information
     requirement_name_mapping = _get_requirement_name_mapping()
     notebook = _get_notebook(notebook_id)
 
@@ -37,17 +39,33 @@ def prepare(notebook_id: str):
         for req in notebook.get("requirements", [])
     ]
 
-    display(Markdown(
-        "# Euro Data Cube Getting Started"
-    ))
+    info = dedent(f"""
+        ***Notebook Title***  
+        {notebook['name']}
+        
+        ***Notebook Description***  
+        {notebook['description']}
+        
+        """
+    )
+
     if requirements:
-        display(Markdown(
-            "## Requirements\n"
-            "This noteboot requires an active subscription to:\n" +
-            "".join(f"* {req}\n" for req in requirements) +
-            "\nAPI credentials will be injected automatically."
-        ))
+        nl = "\n"  # newline not allowed in f-string
+        info += dedent(f"""
+            ***Notebook Dependencies***  
+            This notebook requires an active subscription to:
+            {"".join(f"* {req}" + nl for req in requirements)}
+            """
+        )
 
-    # enable this to also show the notebook name:
-    # display(Markdown(f"# {notebook['name']}"))
+    info += dedent(
+        """
+        ---------
+        
+        *API credentials have automatically been injected for your active subscriptions.*
+        
+        -------------
+        """
+    )
 
+    display(Markdown(info))
