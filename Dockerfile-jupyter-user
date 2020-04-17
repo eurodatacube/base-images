@@ -122,6 +122,7 @@ RUN apt-get update && apt-get install -yq --no-install-recommends \
     tzdata \
     unzip \
     nano \
+    vim \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN sed -i -e 's:(groups):(groups 2>/dev/null):' /etc/bash.bashrc
