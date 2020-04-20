@@ -2,7 +2,7 @@ import requests
 from textwrap import dedent
 
 from IPython.display import display, HTML, YouTubeVideo, Markdown
-from dotenv import load_dotenv
+from dotenv.main import find_dotenv, DotEnv
 
 
 # TODO: configure dev or production!!!!
@@ -28,7 +28,8 @@ def _get_notebook(notebook_id: str):
 def prepare(notebook_id: str):
 
     # actual setup
-    load_dotenv()
+    dot_env = DotEnv(find_dotenv())
+    dot_env.set_as_environment_variables()
 
     # the rest displays information
     requirement_name_mapping = _get_requirement_name_mapping()
@@ -50,13 +51,12 @@ def prepare(notebook_id: str):
     )
 
     if requirements:
-        nl = "\n"  # newline not allowed in f-string
         info += dedent(f"""
             ***Notebook Dependencies***  
             This notebook requires an active subscription to:
-            {"".join(f"* {req}" + nl for req in requirements)}
             """
         )
+        info += "".join(f"* {req}\n" for req in requirements)
 
     info += dedent(
         """
@@ -64,8 +64,11 @@ def prepare(notebook_id: str):
         
         *API credentials have automatically been injected for your active subscriptions.*
         
-        -------------
+        The following environment variables are now available:
         """
     )
+    info += "".join(f"* `{k}`\n" for k in dot_env.dict().keys())
+    info += "\n-------------\n"
+    display((info))
 
     display(Markdown(info))
