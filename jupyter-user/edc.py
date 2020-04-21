@@ -75,6 +75,47 @@ def prepare(notebook_id: str, dev: bool = False):
     )
     info += "".join(f"* `{k}`\n" for k in dot_env.dict().keys())
     info += "\n-------------\n"
-    display((info))
 
     display(Markdown(info))
+
+
+def print_info(notebook_id: str, dev: bool = False):
+    """Shows nice info for shared notebooks."""
+    requirement_name_mapping = _get_requirement_name_mapping(dev=dev)
+    notebook = _get_notebook(notebook_id, dev=dev)
+
+    requirements = [
+        requirement_name_mapping.get(req, req)
+        for req in notebook.get("requirements", [])
+    ]
+
+    info = dedent(f"""
+        ***Notebook Title***  
+        {notebook['name']}
+        
+        ***Notebook Description***  
+        {notebook['description']}
+        
+        """
+    )
+
+    if requirements:
+        info += dedent(f"""
+            ***Notebook Dependencies***  
+            This notebook requires an active subscription to:
+            """
+        )
+        info += "".join(f"* {req}\n" for req in requirements)
+
+    display(Markdown(info))
+
+
+def setup_environment_variables():
+    """Called in every notebook to inject credentials to environment"""
+    dot_env = DotEnv(find_dotenv())
+    dot_env.set_as_environment_variables()
+    display(Markdown(
+        "API credentials have automatically been injected for your active subscriptions.  \n" +
+        "The following environment variables are now available:\n" +
+        "".join(f"* `{k}`\n" for k in dot_env.dict().keys())
+    ))
