@@ -117,5 +117,6 @@ def setup_environment_variables():
     display(Markdown(
         "API credentials have automatically been injected for your active subscriptions.  \n" +
         "The following environment variables are now available:\n" +
-        "".join(f"* `{k}`\n" for k in dot_env.dict().keys())
+        "".join(f"* `{k}`\n" for k in dot_env.dict().keys()) +
+        "------\n"
     ))
