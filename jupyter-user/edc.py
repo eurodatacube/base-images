@@ -1,3 +1,4 @@
+import os.path
 import requests
 from textwrap import dedent
 
@@ -114,9 +115,23 @@ def setup_environment_variables():
     """Called in every notebook to inject credentials to environment"""
     dot_env = DotEnv(find_dotenv())
     dot_env.set_as_environment_variables()
-    display(Markdown(
+    info =  (
         "API credentials have automatically been injected for your active subscriptions.  \n" +
         "The following environment variables are now available:\n" +
         "".join(f"* `{k}`\n" for k in dot_env.dict().keys()) +
-        "------\n"
-    ))
+        "\n"
+    )
+
+    user_dot_env_path = "~/custom.env"
+    user_dot_env = DotEnv(os.path.expanduser(user_dot_env_path))
+    user_dot_env.set_as_environment_variables(override=True)
+    user_vars = user_dot_env.dict()
+    if user_vars:
+        info += (
+            f"The following additional environment variables have been loaded from `{user_dot_env_path}`:\n" +
+            "".join(f"* `{k}`\n" for k in user_vars)
+        )
+
+    info += "------\n"
+
+    display(Markdown(info))
