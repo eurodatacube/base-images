@@ -19,8 +19,6 @@ RUN apt-get update \
     locales \
     fonts-liberation \
     run-one \
-    s3fs \
-    openssh-client \
  && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
@@ -125,6 +123,8 @@ RUN apt-get update && apt-get install -yq --no-install-recommends \
     unzip \
     nano \
     vim \
+    s3fs \
+    openssh-client \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN sed -i -e 's:(groups):(groups 2>/dev/null):' /etc/bash.bashrc
