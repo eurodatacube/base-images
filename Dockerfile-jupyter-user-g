@@ -220,7 +220,8 @@ RUN conda install --quiet --yes --freeze-installed -c conda-forge \
     numba \
     llvmlite \
     descartes \
-    nbdime \
+    # nbdime contains a jupyterlab extension and nbdime 2 requires jupyterlab 2
+    nbdime==1.1.0 \
     papermill \
     s3fs \
     && \
