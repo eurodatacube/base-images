@@ -1,3 +1,4 @@
+# based on jupyter/base-notebook
 ARG ROOT_CONTAINER=nvidia/cuda:10.1-devel-ubuntu18.04
 
 ARG BASE_CONTAINER=$ROOT_CONTAINER
@@ -50,46 +51,56 @@ RUN echo "auth requisite pam_deny.so" >> /etc/pam.d/su && \
     fix-permissions $HOME && \
     fix-permissions "$(dirname $CONDA_DIR)"
 
+USER $NB_UID
 WORKDIR $HOME
 ARG PYTHON_VERSION=default
 
 RUN mkdir /home/$NB_USER/work && \
     fix-permissions /home/$NB_USER
 
-ENV MINICONDA_VERSION=4.7.12.1 \
-    MINICONDA_MD5=81c773ff87af5cfac79ab862942ab6b3 \
-    CONDA_VERSION=4.7.12
+ENV MINICONDA_VERSION=4.8.2 \
+    MINICONDA_MD5=87e77f097f6ebb5127c77662dfc3165e \
+    CONDA_VERSION=4.8.2
 
 RUN cd /tmp && \
-    wget --quiet https://repo.continuum.io/miniconda/Miniconda3-${MINICONDA_VERSION}-Linux-x86_64.sh && \
-    echo "${MINICONDA_MD5} *Miniconda3-${MINICONDA_VERSION}-Linux-x86_64.sh" | md5sum -c - && \
-    /bin/bash Miniconda3-${MINICONDA_VERSION}-Linux-x86_64.sh -f -b -p $CONDA_DIR && \
-    rm Miniconda3-${MINICONDA_VERSION}-Linux-x86_64.sh && \
+    wget --quiet https://repo.continuum.io/miniconda/Miniconda3-py37_${MINICONDA_VERSION}-Linux-x86_64.sh && \
+    echo "${MINICONDA_MD5} *Miniconda3-py37_${MINICONDA_VERSION}-Linux-x86_64.sh" | md5sum -c - && \
+    /bin/bash Miniconda3-py37_${MINICONDA_VERSION}-Linux-x86_64.sh -f -b -p $CONDA_DIR && \
+    rm Miniconda3-py37_${MINICONDA_VERSION}-Linux-x86_64.sh && \
     echo "conda ${CONDA_VERSION}" >> $CONDA_DIR/conda-meta/pinned && \
     conda config --system --prepend channels conda-forge && \
     conda config --system --set auto_update_conda false && \
     conda config --system --set show_channel_urls true && \
+    conda config --system --set channel_priority strict && \
     if [ ! $PYTHON_VERSION = 'default' ]; then conda install --yes python=$PYTHON_VERSION; fi && \
     conda list python | grep '^python ' | tr -s ' ' | cut -d '.' -f 1,2 | sed 's/$/.*/' >> $CONDA_DIR/conda-meta/pinned && \
-    conda install --quiet --yes --freeze-installed conda && \
+    conda install --quiet --yes conda && \
     conda install --quiet --yes --freeze-installed pip && \
     conda update --all --quiet --yes && \
     conda clean --all -f -y && \
-    rm -rf /home/$NB_USER/.cache/yarn
+    rm -rf /home/$NB_USER/.cache/yarn && \
+    fix-permissions $CONDA_DIR && \
+    fix-permissions /home/$NB_USER
+
 
 RUN conda install --quiet --yes --freeze-installed 'tini=0.18.0' && \
     conda list tini | grep tini | tr -s ' ' | cut -d ' ' -f 1,2 >> $CONDA_DIR/conda-meta/pinned && \
-    conda clean --all -f -y
+    conda clean --all -f -y && \
+    fix-permissions $CONDA_DIR && \
+    fix-permissions /home/$NB_USER
+
 
 RUN conda install --quiet --yes --freeze-installed \
     'notebook=6.0.3' \
     'jupyterhub=1.1.0' \
-    'jupyterlab=1.2.5' && \
+    'jupyterlab=2.1.1' && \
     conda clean --all -f -y && \
     npm cache clean --force && \
     jupyter notebook --generate-config && \
     rm -rf $CONDA_DIR/share/jupyter/lab/staging && \
-    rm -rf /home/$NB_USER/.cache/yarn
+    rm -rf /home/$NB_USER/.cache/yarn && \
+    fix-permissions $CONDA_DIR && \
+    fix-permissions /home/$NB_USER
 
 EXPOSE 8888
 
@@ -101,11 +112,18 @@ COPY start-notebook.sh /usr/local/bin/
 COPY start-singleuser.sh /usr/local/bin/
 COPY jupyter_notebook_config.py /etc/jupyter/
 
+USER root
 RUN fix-permissions /etc/jupyter/
+USER $NB_UID
+
+
+# based on jupyter/minimal-notebook
+
+USER root
 
 RUN apt-get update && apt-get install -yq --no-install-recommends \
     build-essential \
-    emacs \
+    emacs-nox \
     git \
     inkscape \
     jed \
@@ -123,10 +141,16 @@ RUN apt-get update && apt-get install -yq --no-install-recommends \
     unzip \
     nano \
     vim \
+    # allow mounting s3 buckets
     s3fs \
+    # add ssh client for passwordless ssh
     openssh-client \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
+
+# bsed on jupyter/scipy-notebook
+
+# fixing missing group IDs
 RUN sed -i -e 's:(groups):(groups 2>/dev/null):' /etc/bash.bashrc
 
 RUN apt-get update && \
@@ -139,67 +163,81 @@ RUN set -ex \
 ' \
  && apt-get update \
  && apt-get -y install htop apt-utils graphviz libgraphviz-dev \
- && pip install --no-cache-dir $buildDeps
-
-RUN fix-permissions $CONDA_DIR
-
-RUN fix-permissions /home/$NB_USER 
+ && pip install --no-cache-dir $buildDeps \
+ && fix-permissions $CONDA_DIR \
+ && fix-permissions /home/$NB_USER
 
 USER $NB_UID
 
 RUN conda install --quiet --yes --freeze-installed \
-    'beautifulsoup4=4.8.*' \
+    'beautifulsoup4=4.9.*' \
     'conda-forge::blas=*=openblas' \
-    'bokeh=1.4.*' \
-    'cloudpickle=1.2.*' \
+    'bokeh=2.0.*' \
+    'bottleneck=1.3.*' \
+    'cloudpickle=1.4.*' \
     'cython=0.29.*' \
-    'dask=2.9.*' \
+    'dask=2.15.*' \
     'dill=0.3.*' \
     'h5py=2.10.*' \
     'hdf5=1.10.*' \
     'ipywidgets=7.5.*' \
-    'matplotlib-base=3.1.*' \
+    'ipympl=0.5.*'\
+    'matplotlib-base=3.2.*' \
+    # numba update to 0.49 fails resolving deps.
     'numba=0.48.*' \
     'numexpr=2.7.*' \
-    'pandas=0.25.*' \
+    'pandas=1.0.*' \
     'patsy=0.5.*' \
     'protobuf=3.11.*' \
-    #'scikit-image=0.16.*' \
+    'pytables=3.6.*' \
+    'scikit-image=0.16.*' \
     'scikit-learn=0.22.*' \
     'scipy=1.4.*' \
-    'seaborn=0.9.*' \
+    'seaborn=0.10.*' \
     'sqlalchemy=1.3.*' \
     'statsmodels=0.11.*' \
     'sympy=1.5.*' \
     'vincent=0.4.*' \
-    'xlrd' \
+    'widgetsnbextension=3.5.*'\
+    'xlrd=1.2.*' \
     && \
     conda clean --all -f -y && \
+    # Activate ipywidgets extension in the environment that runs the notebook server
     jupyter nbextension enable --py widgetsnbextension --sys-prefix && \
-    jupyter labextension install @jupyter-widgets/jupyterlab-manager@^1.0.1 --no-build && \
-    jupyter labextension install jupyterlab_bokeh@1.0.0 --no-build && \
-    jupyter lab build && \
+    # Also activate ipywidgets extension for JupyterLab
+    # Check this URL for most recent compatibilities
+    # https://github.com/jupyter-widgets/ipywidgets/tree/master/packages/jupyterlab-manager
+    jupyter labextension install @jupyter-widgets/jupyterlab-manager@^2.0.0 --no-build && \
+    jupyter labextension install @bokeh/jupyter_bokeh@^2.0.0 --no-build && \
+    jupyter labextension install jupyter-matplotlib@^0.7.2 --no-build && \
+    jupyter lab build -y && \
+    jupyter lab clean -y && \
     npm cache clean --force && \
-    rm -rf $CONDA_DIR/share/jupyter/lab/staging && \
     rm -rf /home/$NB_USER/.cache/yarn && \
-    rm -rf /home/$NB_USER/.node-gyp
+    rm -rf /home/$NB_USER/.node-gyp && \
+    fix-permissions $CONDA_DIR && \
+    fix-permissions /home/$NB_USER
+
 
 RUN cd /tmp && \
     git clone https://github.com/PAIR-code/facets.git && \
     cd facets && \
     jupyter nbextension install facets-dist/ --sys-prefix && \
     cd && \
-    rm -rf /tmp/facets
+    rm -rf /tmp/facets && \
+    fix-permissions $CONDA_DIR && \
+    fix-permissions /home/$NB_USER
+
 
 ENV XDG_CACHE_HOME /home/$NB_USER/.cache/
-RUN MPLBACKEND=Agg python -c "import matplotlib.pyplot"
+RUN MPLBACKEND=Agg python -c "import matplotlib.pyplot" && \
+    fix-permissions /home/$NB_USER
 
 RUN conda install --quiet --yes --freeze-installed -c conda-forge \
     pyyaml \
     setuptools \
     cmake \
     cffi \
-    typing \
     python-dotenv \
     oauthlib \
     requests-oauthlib \
@@ -220,8 +258,7 @@ RUN conda install --quiet --yes --freeze-installed -c conda-forge \
     numba \
     llvmlite \
     descartes \
-    # nbdime contains a jupyterlab extension and nbdime 2 requires jupyterlab 2
-    nbdime==1.1.0 \
+    nbdime \
     papermill \
     s3fs \
     && \
@@ -229,9 +266,9 @@ RUN conda install --quiet --yes --freeze-installed -c conda-forge \
     jupyter labextension install @jupyterlab/github --no-build && \
     jupyter labextension install jupyterlab-drawio --no-build && \
     jupyter labextension install jupyter-leaflet --no-build && \
-    jupyter labextension install @jupyterlab/plotly-extension --no-build && \
+    jupyter labextension install jupyterlab-plotly --no-build && \
     jupyter labextension install @jupyterlab/geojson-extension --no-build && \
-    jupyter labextension install edc-jlab@0.2.0 --no-build && \
+    jupyter labextension install edc-jlab@0.3.0 --no-build && \
     jupyter lab build && \
     npm cache clean --force && \
     rm -rf $CONDA_DIR/share/jupyter/lab/staging && \
