@@ -234,7 +234,6 @@ RUN conda install --quiet --yes --freeze-installed -c conda-forge \
     setuptools \
     cmake \
     cffi \
-    typing \
     python-dotenv \
     oauthlib \
     requests-oauthlib \
