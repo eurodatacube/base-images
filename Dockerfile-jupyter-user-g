@@ -286,17 +286,16 @@ ADD jupyter-user/edc.py /tmp/edc/__init__.py
 RUN mv /tmp/edc $(python3 -c 'import site; print(site.getsitepackages()[0])')
 
 
-RUN conda install --yes --freeze-installed  -c conda-forge tensorboard
-RUN conda install --yes torchvision -c pytorch
-RUN false
-RUN conda install --yes \
+RUN conda config --system --set channel_priority flexible && \
+    conda install --yes --freeze-installed \
     'tensorflow-gpu=2.1*' \
     'keras-gpu' \
-     pytorch \ 
+     pytorch \
      torchvision \
      cudatoolkit=10.1 -c pytorch \
      && \
-     conda clean --all -f -y
+    conda config --system --set channel_priority strict && \
+    conda clean --all -f -y
 
 RUN fix-permissions /home/$NB_USER
 
