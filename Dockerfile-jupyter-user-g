@@ -285,7 +285,11 @@ RUN mkdir /tmp/edc
 ADD jupyter-user/edc.py /tmp/edc/__init__.py
 RUN mv /tmp/edc $(python3 -c 'import site; print(site.getsitepackages()[0])')
 
-RUN conda install --quiet --yes --freeze-installed \
+
+RUN conda install --yes --freeze-installed  -c conda-forge tensorboard
+RUN conda install --yes torchvision -c pytorch
+RUN false
+RUN conda install --yes \
     'tensorflow-gpu=2.1*' \
     'keras-gpu' \
      pytorch \ 
