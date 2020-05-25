@@ -236,14 +236,10 @@ def check_compatibility(tag: str) -> None:
             msg += f"### New libraries:\n```\n{''.join(_append_nl(added))}```\n"
 
         if removed:
-            print("### Removed libraries:")
-            print("\n".join(removed))
-            print()
+            msg += f"### Removed libraries:\n```\n{''.join(_append_nl(removed))}```\n"
 
         if major:
-            print("### Libraries with major version differences:")
-            print("\n".join(major))
-            print()
+            msg += f"### Libraries with major version differences:\n```\n{''.join(_append_nl(major))}```\n"
 
         if minor:
             msg += f"### Libraries with minor version differences:\n```\n{''.join(_append_nl(minor))}```\n"
