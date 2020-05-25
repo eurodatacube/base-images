@@ -217,11 +217,9 @@ def check_compatibility(tag: str) -> None:
             This notebook has been verified using the [base image **{tag}**](https://github.com/eurodatacube/base-images/releases/tag/{tag}),
             whereas you are currently running [base image **{current_image_tag}**](https://github.com/eurodatacube/base-images/releases/tag/{current_image_tag}).
 
-            If you experience any problems, please consult the [marketplace](https://eurodatacube.com/marketplace) for a more recent version of the notebook.
+            If you experience any problems, please consult the [marketplace](https://eurodatacube.com/marketplace) for a more recent version of this notebook.
 
-            
-
-            These changes occurred in base image in between these versions:
+            The following changes occurred in base image in between these versions:
 
             """
         )
