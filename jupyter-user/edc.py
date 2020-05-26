@@ -151,8 +151,6 @@ def setup_environment_variables():
             + _format_env_list(user_vars.keys())
         )
 
-    info += "------\n"
-
     display(Markdown(info))
 
 
