@@ -1,5 +1,6 @@
 import collections
 import difflib
+import itertools
 import os
 import os.path
 import re
@@ -119,6 +120,16 @@ def print_info(notebook_id: str, dev: bool = False):
     display(Markdown(info))
 
 
+def _format_env_list(variables):
+    groups = itertools.groupby(
+        sorted(variables),
+        # group by first part, e.g. "SH" or "GEODB"
+        key=lambda var: var.split("_", 1)[0],
+    )
+    formatted_groups = [", ".join(f"`{v}`" for v in group) for _, group in groups]
+    return "".join(f"* {line}\n" for line in formatted_groups)
+
+
 def setup_environment_variables():
     """Called in every notebook to inject credentials to environment"""
     dot_env = DotEnv(find_dotenv())
@@ -126,7 +137,7 @@ def setup_environment_variables():
     info = (
         "API credentials have automatically been injected for your active subscriptions.  \n"
         + "The following environment variables are now available:\n"
-        + "".join(f"* `{k}`\n" for k in dot_env.dict().keys())
+        + _format_env_list(dot_env.dict().keys())
         + "\n"
     )
 
@@ -137,7 +148,7 @@ def setup_environment_variables():
     if user_vars:
         info += (
             f"The following additional environment variables have been loaded from `{user_dot_env_path}`:\n"
-            + "".join(f"* `{k}`\n" for k in user_vars)
+            + _format_env_list(user_vars.keys())
         )
 
     info += "------\n"
