@@ -195,6 +195,7 @@ def _group_major_minor_added_remove(
 
     major, minor, added, removed = [], [], [], []
     for lib, versions in libraries.items():
+
         if len(versions) == 2:
             if versions[0]["major_version"] != versions[1]["major_version"]:
                 major.extend((versions[0]["line"], versions[1]["line"]))
@@ -218,7 +219,7 @@ def _append_nl(seq: List[str]) -> List[str]:
 def check_compatibility(tag: str) -> None:
     current_image_tag = "v" + os.environ["JUPYTER_IMAGE"].split(":", 2)[1]
     if current_image_tag == tag:
-        print("Notebook is compatible")
+        msg = f"This notebook is compatible with this base image version ({tag})."
     else:
         msg = dedent(
             f"""
@@ -253,4 +254,4 @@ def check_compatibility(tag: str) -> None:
         if minor:
             msg += f"### Libraries with minor version differences:\n```\n{''.join(_append_nl(minor))}```\n"
 
-        display(Markdown(msg))
+    display(Markdown(msg))
