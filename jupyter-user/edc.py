@@ -20,6 +20,7 @@ CONTRIBUTIONS_API_URL = {
     "dev": "https://contributions-api.dev.hub.eox.at",
     "prod": "https://contributions-api.hub.eox.at",
 }
+RELEASE_URL = "https://contributions-api.hub.eox.at/base-image-release-notes/{tag}"
 
 
 def _get_requirement_name_mapping(dev: bool):
@@ -154,8 +155,6 @@ def setup_environment_variables():
     display(Markdown(info))
 
 
-release_url = "https://contributions-api.dev.hub.eox.at/base-image-release-notes/{tag}"
-
 # Example: -ipython                   7.13.0           py37hc8dfbb8_2    conda-forge
 conda_list_output_regex = (
     r"^[-+](?P<name>\S+)\s+(?P<major_version>\d+)\.\S+\s+\S+\s+\S+$"
@@ -164,7 +163,7 @@ conda_list_output_regex = (
 
 
 def _get_release_message(tag: str) -> str:
-    response = requests.get(release_url.format(tag=tag))
+    response = requests.get(RELEASE_URL.format(tag=tag))
     response.raise_for_status()
     return response.text
 
