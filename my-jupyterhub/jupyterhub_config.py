@@ -2,7 +2,7 @@ from tornado.httpclient import AsyncHTTPClient
 import json
 
 c.JupyterHub.authenticator_class = 'dummyauthenticator.DummyAuthenticator'
-c.DummyAuthenticator.password = "a"
+c.DummyAuthenticator.password = ""
 c.JupyterHub.spawner_class = 'kubespawner.KubeSpawner'
 
 
@@ -13,6 +13,7 @@ async def foo(spawner, auth_state):
     response = await AsyncHTTPClient().fetch(api_url)
     data = json.loads(response.body.decode('utf8', 'replace'))
     spawner.log.error("le data" + str(data))
+    spawner.login_allowed = True
     spawner.profile_list = [
             {
                 'display_name': 'Training Env - Datascience',

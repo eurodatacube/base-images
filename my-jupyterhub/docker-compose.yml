@@ -7,6 +7,7 @@ services:
         - 8081:8081
         volumes:
         - ./jupyterhub_config.py:/etc/jupyterhub/jupyterhub_config.py
+        - ../jupyter-hub/templates:/usr/local/share/jupyterhub/templates
         - /usr/bin/kubectl:/usr/bin/kubectl
         - /home/mallinger/.kube:/root/.kube
         - /home/mallinger/.minikube:/home/mallinger/.minikube
