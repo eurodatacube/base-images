@@ -133,10 +133,11 @@ RUN apt-get update && apt-get install -yq --no-install-recommends \
     lmodern \
     netcat \
     python-dev \
-    texlive-xetex \
-    texlive-fonts-recommended \
-    texlive-generic-recommended \
-    texlive-fonts-extra \
+    # REMOVED-TO-SAVE-SPACE-NOW
+    #texlive-xetex \
+    #texlive-fonts-recommended \
+    #texlive-generic-recommended \
+    #texlive-fonts-extra \
     tzdata \
     unzip \
     nano \
@@ -153,9 +154,10 @@ RUN apt-get update && apt-get install -yq --no-install-recommends \
 # fixing missing group IDs
 RUN sed -i -e 's:(groups):(groups 2>/dev/null):' /etc/bash.bashrc
 
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends ffmpeg && \
-    rm -rf /var/lib/apt/lists/*
+# REMOVED-TO-SAVE-SPACE-NOW
+#RUN apt-get update && \
+#    apt-get install -y --no-install-recommends ffmpeg && \
+#    rm -rf /var/lib/apt/lists/*
 
 RUN set -ex \
  && buildDeps=' \
