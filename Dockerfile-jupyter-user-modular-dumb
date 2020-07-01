@@ -1,0 +1,12 @@
+FROM eurodatacube/jupyter-user:0.18.4-base-01
+
+ADD base-environment.yaml .
+RUN conda env create --file base-environment.yaml -n eurodatacube-0.18.4 \
+    && conda clean --all -f -y
+
+USER root
+RUN conda run -n eurodatacube-0.18.4 python -m ipykernel install --name eurodatacube-0.18.4 --display-name "EuroDataCube 0.18.4 (Python 3)"
+USER $NB_UID
+
+# install edc from base image (TODO: make it into package, installable from git)
+RUN cp -r /opt/conda/lib/python3.7/site-packages/edc /opt/conda/envs/eurodatacube-0.18.4/lib/python*/site-packages

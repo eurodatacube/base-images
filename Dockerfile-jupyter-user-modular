@@ -1,0 +1,18 @@
+ARG BASE_IMAGE_VERSION
+FROM eurodatacube/jupyter-user:$BASE_IMAGE_VERSION
+
+ARG CONDA_ENVIRONMENT_FILE
+
+ADD "${CONDA_ENVIRONMENT_FILE}" .
+RUN conda env create --file "$CONDA_ENVIRONMENT_FILE" \
+    && conda clean --all -f -y
+
+RUN /opt/conda/envs/*/bin/python -c "import sys; import yaml; print(yaml.safe_load(sys.stdin)['name'])" < "${CONDA_ENVIRONMENT_FILE}" > /tmp/kernel_name
+
+USER root
+# install kernel
+RUN /opt/conda/envs/`cat /tmp/kernel_name`/bin/python -m ipykernel install  # TODO: display_name
+USER $NB_UID
+
+# install edc from base image (TODO: make it into package, installable from git)
+RUN cp -r /opt/conda/lib/python3.7/site-packages/edc /opt/conda/envs/`cat /tmp/kernel_name`/lib/python*/site-packages
