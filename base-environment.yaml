@@ -19,7 +19,6 @@ dependencies:
   - 'hdf5=1.10.*'
   - 'ipywidgets=7.5.*'
   - 'ipympl=0.5.*'
-  - 'jupyterlab-git=0.20.0'
   - 'matplotlib-base=3.2.*'
   - 'numba=0.48.*'
   - 'numexpr=2.7.*'
