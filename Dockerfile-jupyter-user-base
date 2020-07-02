@@ -227,4 +227,7 @@ RUN mv /tmp/edc $(python3 -c 'import site; print(site.getsitepackages()[0])')
 
 RUN fix-permissions /home/$NB_USER
 
+# the default kernel doesn't have any edc libraries, so we never want to use it
+RUN jupyter kernelspec remove python3
+
 USER $NB_UID
