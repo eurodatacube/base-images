@@ -216,7 +216,7 @@ def _append_nl(seq: List[str]) -> List[str]:
 
 
 def check_compatibility(tag: str) -> None:
-    current_image_tag = "v" + os.environ["JUPYTER_IMAGE"].split(":", 2)[1]
+    current_image_tag = "user-" + os.environ["JUPYTER_IMAGE"].split(":", 2)[1]
     if current_image_tag == tag:
         msg = f"This notebook is compatible with this base image version ({tag})."
     else:
