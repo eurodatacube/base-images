@@ -7,7 +7,8 @@ ENV KERNEL_NAME=eurodatacube-${DOCKER_TAG}
 # install environment
 ADD base-environment.yaml .
 RUN conda env create --file base-environment.yaml -n "${KERNEL_NAME}" \
-    && conda clean --all -f -y
+    && conda clean --all -f -y \
+    && rm base-environment.yaml
 
 # install kernel
 USER root
