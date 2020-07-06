@@ -6,10 +6,12 @@ ENV KERNEL_NAME=eurodatacube-gpu-${DOCKER_TAG}
 
 # install environment
 ADD gpu-environment.yaml .
-RUN conda config --system --set channel_priority flexible && \
+RUN pip config set global.cache-dir false && \
+    conda config --system --set channel_priority flexible && \
     conda env create --file gpu-environment.yaml -n "${KERNEL_NAME}" && \
     conda config --system --set channel_priority strict && \
     conda clean --all -f -y && \
+    pip config set global.cache-dir true && \
     rm gpu-environment.yaml && \
     fix-permissions /home/$NB_USER
 
