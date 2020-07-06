@@ -1,5 +1,6 @@
-name: edc-base
+name: edc-base-gpu
 channels:
+  - pytorch
   - conda-forge
   - defaults
 dependencies:
@@ -71,3 +72,10 @@ dependencies:
     - git+https://github.com/dcs4cop/xcube-sh@7a69e937ad2ed854069f6b15e2c9a8f386e50f94
     - git+https://github.com/dcs4cop/xcube-geodb@22c31e9c2982fadc8d42ee1be0693849630800a7
     - git+https://github.com/dcs4cop/xcube-gen@104e310324f8affe4cd7f002efc04b8426b5bf8a
+
+  # gpu libs
+  - 'tensorflow-gpu=2.1*'
+  - keras-gpu
+  - pytorch
+  - torchvision
+  - cudatoolkit=10.1
