@@ -67,7 +67,7 @@ dependencies:
   - pip
   - pip:
     - eo-learn==0.7.2
-    - git+https://github.com/dcs4cop/xcube@0344b1491dbaf25fe217ebb6b8bded4eba3d5d2a
-    - git+https://github.com/dcs4cop/xcube-sh@7a69e937ad2ed854069f6b15e2c9a8f386e50f94
+    - git+https://github.com/dcs4cop/xcube@87c0c3ae34cac3c2018d290851b89d400e3a819e
+    - git+https://github.com/dcs4cop/xcube-sh@832cd809857fccca8b23eb474c3fce31067513d3
     - git+https://github.com/dcs4cop/xcube-geodb@22c31e9c2982fadc8d42ee1be0693849630800a7
     - git+https://github.com/dcs4cop/xcube-gen@104e310324f8affe4cd7f002efc04b8426b5bf8a
