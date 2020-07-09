@@ -16,6 +16,19 @@ RUN pip config set global.cache-dir false \
 USER root
 RUN conda run -n "${KERNEL_NAME}" python -m ipykernel install --name "${KERNEL_NAME}" --display-name "EuroDataCube ${DOCKER_TAG} (Python 3)"
 
+# we need to patch the kernel.json to set up PATH :(
+# by default, the kernel bin dir is not included in PATH
+# when the kernel executes a notebook, but we need it for sentinelhub.config
+# https://github.com/jupyter/notebook/issues/4527
+# https://github.com/ipython/ipykernel/issues/395
+RUN python3 -c "\
+import os; \
+import json; \
+kernel_name = os.environ['KERNEL_NAME']; \
+new_path = f'/opt/conda/envs/{kernel_name}/bin:/opt/conda/condabin:/opt/conda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'; \
+kernel_json = f'/usr/local/share/jupyter/kernels/{kernel_name}/kernel.json'; \
+json.dump({**json.load(open(kernel_json)), 'env': {'PATH': new_path}}, open(kernel_json, 'w'), indent=4)"
+
 ADD jupyter-user/edc.py .
 RUN mv edc.py /opt/conda/envs/"${KERNEL_NAME}"/lib/python*/site-packages
 USER $NB_UID
