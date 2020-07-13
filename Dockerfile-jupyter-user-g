@@ -17,7 +17,7 @@ RUN pip config set global.cache-dir false && \
 
 # install kernel
 USER root
-RUN conda run -n "${KERNEL_NAME}" python -m ipykernel install --name "${KERNEL_NAME}" --display-name "EuroDataCube GPU ${DOCKER_TAG} (Python 3)"
+RUN conda run -n "${KERNEL_NAME}" python -m ipykernel install --name "${KERNEL_NAME}" --display-name "EDC-GPU ${DOCKER_TAG} (Python 3)"
 
 # we need to patch the kernel.json to set up PATH :(
 # by default, the kernel bin dir is not included in PATH

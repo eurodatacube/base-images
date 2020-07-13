@@ -1,4 +1,4 @@
-name: edc-kernel
+name: kernel-edc
 channels:
   - conda-forge
   - defaults

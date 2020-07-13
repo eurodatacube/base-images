@@ -1,4 +1,4 @@
-name: edc-gpu-kernel
+name: kernel-edc-gpu
 channels:
   - pytorch
   - conda-forge
