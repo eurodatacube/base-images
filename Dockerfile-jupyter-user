@@ -5,12 +5,12 @@ ARG DOCKER_TAG
 ENV KERNEL_NAME=eurodatacube-${DOCKER_TAG}
 
 # install environment
-ADD base-environment.yaml .
+ADD kernel-edc-environment.yaml .
 RUN pip config set global.cache-dir false \
-    && conda env create --file base-environment.yaml -n "${KERNEL_NAME}" \
+    && conda env create --file kernel-edc-environment.yaml -n "${KERNEL_NAME}" \
     && conda clean --all -f -y \
     && pip config set global.cache-dir true \
-    && rm base-environment.yaml
+    && rm kernel-edc-environment.yaml
 
 # install kernel
 USER root
