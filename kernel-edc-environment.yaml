@@ -64,6 +64,7 @@ dependencies:
   - nbdime
   - papermill
   - s3fs
+  - netcdf4
   - pip
   - pip:
     - eo-learn==0.7.2
