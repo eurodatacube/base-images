@@ -2,13 +2,13 @@ FROM eurodatacube/jupyter-user-base-g:0
 
 ARG DOCKER_TAG
 
-ENV KERNEL_NAME=eurodatacube-gpu-${DOCKER_TAG}
+ENV ENV_NAME=eurodatacube-gpu-${DOCKER_TAG}
 
 # install environment
 ADD kernel-edc-gpu-environment.yaml .
 RUN pip config set global.cache-dir false && \
     conda config --system --set channel_priority flexible && \
-    conda env create --file kernel-edc-gpu-environment.yaml -n "${KERNEL_NAME}" && \
+    conda env create --file kernel-edc-gpu-environment.yaml -n "${ENV_NAME}" && \
     conda config --system --set channel_priority strict && \
     conda clean --all -f -y && \
     pip config set global.cache-dir true && \
@@ -17,10 +17,10 @@ RUN pip config set global.cache-dir false && \
 
 USER root
 # Activate environment by default in interactive shells
-RUN echo "source activate $KERNEL_NAME" >> /etc/bash.bashrc
+RUN echo "source activate $ENV_NAME" >> /etc/bash.bashrc
 
 # install kernel
-RUN conda run -n "${KERNEL_NAME}" python -m ipykernel install --name "${KERNEL_NAME}" --display-name "EDC-GPU ${DOCKER_TAG} (Python 3)"
+RUN conda run -n "${ENV_NAME}" python -m ipykernel install --name "EDC-GPU" --display-name "EDC-GPU ${DOCKER_TAG} (Python 3)"
 
 # we need to patch the kernel.json to set up PATH :(
 # by default, the kernel bin dir is not included in PATH
@@ -30,11 +30,11 @@ RUN conda run -n "${KERNEL_NAME}" python -m ipykernel install --name "${KERNEL_N
 RUN python3 -c "\
 import os; \
 import json; \
-kernel_name = os.environ['KERNEL_NAME']; \
-new_path = f'/opt/conda/envs/{kernel_name}/bin:/opt/conda/condabin:/opt/conda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'; \
-kernel_json = f'/usr/local/share/jupyter/kernels/{kernel_name}/kernel.json'; \
+env_name = os.environ['ENV_NAME']; \
+new_path = f'/opt/conda/envs/{env_name}/bin:/opt/conda/condabin:/opt/conda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'; \
+kernel_json = f'/usr/local/share/jupyter/kernels/{env_name}/kernel.json'; \
 json.dump({**json.load(open(kernel_json)), 'env': {'PATH': new_path}}, open(kernel_json, 'w'), indent=4)"
 
 ADD jupyter-user/edc.py .
-RUN mv edc.py /opt/conda/envs/"${KERNEL_NAME}"/lib/python*/site-packages
+RUN mv edc.py /opt/conda/envs/"${ENV_NAME}"/lib/python*/site-packages
 USER $NB_UID
