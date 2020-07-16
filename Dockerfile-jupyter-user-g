@@ -32,7 +32,7 @@ import os; \
 import json; \
 env_name = os.environ['ENV_NAME']; \
 new_path = f'/opt/conda/envs/{env_name}/bin:/opt/conda/condabin:/opt/conda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'; \
-kernel_json = f'/usr/local/share/jupyter/kernels/EDC/kernel.json'; \
+kernel_json = f'/usr/local/share/jupyter/kernels/edc/kernel.json'; \
 json.dump({**json.load(open(kernel_json)), 'env': {'PATH': new_path}}, open(kernel_json, 'w'), indent=4)"
 
 ADD jupyter-user/edc.py .
