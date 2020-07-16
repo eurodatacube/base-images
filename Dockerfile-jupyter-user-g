@@ -20,7 +20,7 @@ USER root
 RUN echo "source activate $ENV_NAME" >> /etc/bash.bashrc
 
 # install kernel
-RUN conda run -n "${ENV_NAME}" python -m ipykernel install --name "EDC-GPU" --display-name "EDC-GPU ${DOCKER_TAG} (Python 3)"
+RUN conda run -n "${ENV_NAME}" python -m ipykernel install --name "EDC-GPU" --display-name "EDC-GPU ${DOCKER_TAG} (Python3)"
 
 # we need to patch the kernel.json to set up PATH :(
 # by default, the kernel bin dir is not included in PATH
