@@ -1,3 +1,3 @@
 # base-images
 
-docker base images used in various projects
+docker base images for JupyterHub environment
