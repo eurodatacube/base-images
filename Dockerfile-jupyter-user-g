@@ -38,3 +38,10 @@ json.dump({**json.load(open(kernel_json)), 'env': {'PATH': new_path}}, open(kern
 ADD jupyter-user/edc.py .
 RUN mv edc.py /opt/conda/envs/"${ENV_NAME}"/lib/python*/site-packages
 USER $NB_UID
+
+
+# Remove jupyterlab-git extension due to performance reasons
+# https://github.com/jupyterlab/jupyterlab-git/issues/703
+# https://github.com/jupyterlab/jupyterlab-git/issues/667
+# (it is already removed from the base image, but we didn't yet tag and build a new version)
+RUN jupyter-labextension uninstall @jupyterlab/git

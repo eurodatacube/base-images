@@ -203,10 +203,7 @@ RUN cd /tmp && \
 ENV XDG_CACHE_HOME /home/$NB_USER/.cache/
 
 
-RUN conda install --quiet --yes --freeze-installed \
-        jupyterlab-git && \
-    conda clean --all -f -y && \
-    jupyter labextension install @jupyterlab/github --no-build && \
+RUN jupyter labextension install @jupyterlab/github --no-build && \
     jupyter labextension install jupyterlab-drawio --no-build && \
     jupyter labextension install jupyter-leaflet --no-build && \
     jupyter labextension install jupyterlab-plotly --no-build && \
