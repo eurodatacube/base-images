@@ -8,7 +8,7 @@ import requests
 from textwrap import dedent
 from typing import List, Tuple
 
-from IPython.display import display, Markdown
+from IPython.display import display, Markdown, HTML
 from dotenv.main import find_dotenv, DotEnv
 
 
@@ -216,19 +216,26 @@ def _append_nl(seq: List[str]) -> List[str]:
 
 
 def check_compatibility(tag: str) -> None:
+    display(HTML("""<script type="text/javascript">
+        function toggle(id) {
+            el = document.getElementById(id);
+            el.style.display = el.style.display === "none" ? "block" : "none";
+        }
+    </script>"""))
+
     current_image_tag = "user-" + os.environ["JUPYTER_IMAGE"].split(":", 2)[1]
     if current_image_tag == tag:
         msg = f"This notebook is compatible with this base image version ({tag})."
     else:
         msg = dedent(
             f"""
-            ## Base image difference detected
-            This notebook has been verified using the [base image **{tag}**](https://github.com/eurodatacube/base-images/releases/tag/{tag}),
-            whereas you are currently running [base image **{current_image_tag}**](https://github.com/eurodatacube/base-images/releases/tag/{current_image_tag}).
+            <h2>Base image difference detected</h2>
+            <p>This notebook has been verified using the <a href="https://github.com/eurodatacube/base-images/releases/tag/{tag}" target="_blank">base image <strong>{tag}</strong></a>,
+            whereas you are currently running <a href="https://github.com/eurodatacube/base-images/releases/tag/{current_image_tag}" target="_blank">base image <strong>{current_image_tag}</strong></a>.</p>
 
-            If you experience any problems, please consult the [marketplace](https://eurodatacube.com/marketplace) for a more recent version of this notebook.
+            <p>If you experience any problems, please consult the <a href="https://eurodatacube.com/marketplace" target="_blank">marketplace</a> for a more recent version of this notebook.</p>
 
-            The following changes occurred in base image in between these versions:
+            <p>The following changes occurred in base image in between these versions:</p>
 
             """
         )
@@ -241,16 +248,25 @@ def check_compatibility(tag: str) -> None:
 
         major, minor, added, removed = _group_major_minor_added_remove(diff_lines)
 
+        def format_section(heading, entries, count):
+            elm_id = id(heading)
+
+            return f"""
+            <p><h3 style="display: inline">{heading} ({count})</h3>
+            <a href="#" onclick="toggle('#{elm_id}')">show</a><p/>
+            <pre id="#{elm_id}" style="display: none; margin-top: 5px"><code>{''.join(_append_nl(entries))}</code></pre>
+            """
+
         if added:
-            msg += f"### New libraries:\n```\n{''.join(_append_nl(added))}```\n"
+            msg += format_section("New libraries", added, len(added))
 
         if removed:
-            msg += f"### Removed libraries:\n```\n{''.join(_append_nl(removed))}```\n"
+            msg += format_section("Removed libraries", removed, len(removed))
 
         if major:
-            msg += f"### Libraries with major version differences:\n```\n{''.join(_append_nl(major))}```\n"
+            msg += format_section("Libraries with major version differences", major, int(len(major) / 2))
 
         if minor:
-            msg += f"### Libraries with minor version differences:\n```\n{''.join(_append_nl(minor))}```\n"
+            msg += format_section("Libraries with minor version differences", minor, int(len(minor) / 2))
 
-    display(Markdown(msg))
+    display(HTML(msg))
