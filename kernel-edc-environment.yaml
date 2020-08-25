@@ -48,7 +48,7 @@ dependencies:
   - fiona
   - rasterio
   - shapely
-  - xarray==0.15.0
+  - xarray==0.16.0
   - zarr
   - psycopg2
   - geopandas=0.6.1
