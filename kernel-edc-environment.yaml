@@ -65,10 +65,11 @@ dependencies:
   - papermill
   - s3fs
   - netcdf4
+
+  - xcube==0.5.0
+  - xcube_geodb==0.1.8
   - pip
   - pip:
     - eo-learn==0.7.2
-    - git+https://github.com/dcs4cop/xcube@v0.5.1
     - git+https://github.com/dcs4cop/xcube-sh@95c89e6cb3fc3023582855a65894191d25b80a85
-    - git+https://github.com/dcs4cop/xcube-geodb@5d94623726fd41bf58cd5f436b23c70b96282036
     - git+https://github.com/dcs4cop/xcube-gen@104e310324f8affe4cd7f002efc04b8426b5bf8a
