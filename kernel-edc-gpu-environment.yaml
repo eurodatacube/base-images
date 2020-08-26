@@ -5,16 +5,16 @@ channels:
   - defaults
 dependencies:
   # platform basic requirement
-  - ipykernel=5.3.0
+  - ipykernel=5.3.4
 
   # from jupyter/scipy-notebook
   - 'beautifulsoup4=4.9.*'
   - 'conda-forge::blas=*=openblas'
-  - 'bokeh=2.0.*'
+  - 'bokeh=2.1.*'
   - 'bottleneck=1.3.*'
-  - 'cloudpickle=1.4.*'
+  - 'cloudpickle=1.5.*'
   - 'cython=0.29.*'
-  - 'dask=2.15.*'
+  - 'dask=2.20.*'
   - 'dill=0.3.*'
   - 'h5py=2.10.*'
   - 'hdf5=1.10.*'
@@ -25,15 +25,15 @@ dependencies:
   - 'numexpr=2.7.*'
   - 'pandas=1.0.*'
   - 'patsy=0.5.*'
-  - 'protobuf=3.11.*'
+  - 'protobuf=3.12.*'
   - 'pytables=3.6.*'
-  - 'scikit-image=0.16.*'
-  - 'scikit-learn=0.22.*'
-  - 'scipy=1.4.*'
+  - 'scikit-image=0.17.*'
+  - 'scikit-learn=0.23.*'
+  - 'scipy=1.5.*'
   - 'seaborn=0.10.*'
   - 'sqlalchemy=1.3.*'
   - 'statsmodels=0.11.*'
-  - 'sympy=1.5.*'
+  - 'sympy=1.6.*'
   - 'vincent=0.4.*'
   - 'xlrd=1.2.*'
 
@@ -49,7 +49,7 @@ dependencies:
   - fiona
   - rasterio
   - shapely
-  - xarray==0.15.0
+  - xarray==0.16.0
   - zarr
   - psycopg2
   - geopandas=0.6.1
@@ -66,12 +66,13 @@ dependencies:
   - papermill
   - s3fs
   - netcdf4
+
+  - xcube==0.5.0
+  - xcube_geodb==0.1.8
   - pip
   - pip:
     - eo-learn==0.7.2
-    - git+https://github.com/dcs4cop/xcube@87c0c3ae34cac3c2018d290851b89d400e3a819e
-    - git+https://github.com/dcs4cop/xcube-sh@832cd809857fccca8b23eb474c3fce31067513d3
-    - git+https://github.com/dcs4cop/xcube-geodb@22c31e9c2982fadc8d42ee1be0693849630800a7
+    - git+https://github.com/dcs4cop/xcube-sh@95c89e6cb3fc3023582855a65894191d25b80a85
     - git+https://github.com/dcs4cop/xcube-gen@104e310324f8affe4cd7f002efc04b8426b5bf8a
 
   # gpu libs
