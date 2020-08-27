@@ -25,13 +25,15 @@ RUN conda run -n "${ENV_NAME}" python -m ipykernel install --name "EDC" --displa
 # when the kernel executes a notebook, but we need it for sentinelhub.config
 # https://github.com/jupyter/notebook/issues/4527
 # https://github.com/ipython/ipykernel/issues/395
+# since we already have that, also adding version to the metadata for edc-jlab
 RUN python3 -c "\
 import os; \
 import json; \
 env_name = os.environ['ENV_NAME']; \
 new_path = f'/opt/conda/envs/{env_name}/bin:/opt/conda/condabin:/opt/conda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'; \
 kernel_json = f'/usr/local/share/jupyter/kernels/edc/kernel.json'; \
-json.dump({**json.load(open(kernel_json)), 'env': {'PATH': new_path}}, open(kernel_json, 'w'), indent=4)"
+update = {'env': {'PATH': new_path}, 'metadata': {'version': '${DOCKER_TAG}'}}; \
+json.dump({**json.load(open(kernel_json)), **update}, open(kernel_json, 'w'), indent=4)"
 
 ADD jupyter-user/edc.py .
 RUN mv edc.py /opt/conda/envs/"${ENV_NAME}"/lib/python*/site-packages
@@ -42,4 +44,11 @@ USER $NB_UID
 # https://github.com/jupyterlab/jupyterlab-git/issues/703
 # https://github.com/jupyterlab/jupyterlab-git/issues/667
 # (it is already removed from the base image, but we didn't yet tag and build a new version)
-RUN jupyter-labextension uninstall @jupyterlab/git
+# also update edc-jlab (move this to base image asap)
+RUN jupyter labextension uninstall @jupyterlab/git --no-build && \
+    jupyter labextension install edc-jlab@0.5.4 --no-build && \
+    jupyter lab build && \
+    npm cache clean --force && \
+    rm -rf $CONDA_DIR/share/jupyter/lab/staging && \
+    rm -rf /home/$NB_USER/.cache/yarn && \
+    rm -rf /home/$NB_USER/.node-gyp
