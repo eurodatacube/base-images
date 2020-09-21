@@ -1,0 +1,8 @@
+# This is a really basic python image for quick use cases.
+# Expand as needed.  Auto-build currently isn't set up.
+# It's available from eurodatacube/python-common
+FROM python:3.8.5-slim
+RUN python3 -m pip install --no-cache \
+    beautifulsoup4 \
+    requests \
+    boto3
