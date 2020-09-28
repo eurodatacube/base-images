@@ -44,6 +44,7 @@ USER $NB_UID
 # https://github.com/jupyterlab/jupyterlab-git/issues/703
 # https://github.com/jupyterlab/jupyterlab-git/issues/667
 # (it is already removed from the base image, but we didn't yet tag and build a new version)
+# UPDATE: jupyterlab-git 0.22.0 is supposed to fix the performance issue, test this when released
 # also update edc-jlab (move this to base image asap)
 RUN jupyter labextension uninstall @jupyterlab/git --no-build && \
     jupyter labextension install edc-jlab@0.5.4 --no-build && \
