@@ -66,8 +66,8 @@ dependencies:
   - s3fs
   - netcdf4
 
-  - xcube==0.5.0
-  - xcube_geodb==0.1.8
+  - xcube==0.5.1
+  - xcube_geodb==0.1.10
   - pip
   - pip:
     - eo-learn==0.7.2
