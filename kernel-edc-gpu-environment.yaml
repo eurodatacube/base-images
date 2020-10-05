@@ -81,3 +81,19 @@ dependencies:
   - pytorch
   - torchvision
   - cudatoolkit=10.1
+
+
+  # NOTE: conda fails to calculate the dependency versions within docker-hub resource constraints.
+  #       locally it takes > 30 min with > 3.7 GB mem.
+  #       this is a known issue and conda refuses to fix it:
+  #       https://github.com/conda/conda/issues/5003
+  #       these requirements here are only meant to guide conda to one possible configuration, i.e.
+  #       please update/remove for future base image updates.
+  - pytorch==1.4.0=py3.7_cuda10.1.243_cudnn7.6.3_0
+  - keras-gpu=2.3.1=0
+  - torchvision=0.5.0=py37_cu101
+  - numpy=1.19.1=py37h7ea13bd_2
+  - ipython=7.18.1=py37hc6149b9_0
+  - hdf5=1.10.5=nompi_h3c11f04_1104
+  - fiona=1.8.9.post2=py37hdff7cfa_0
+  - python=3.7.8=h6f2ec95_1_cpython
