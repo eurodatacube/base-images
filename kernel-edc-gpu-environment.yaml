@@ -81,7 +81,9 @@ dependencies:
   - pytorch
   - torchvision
   - cudatoolkit=10.1
-
+  # NOTE: this downgrade is necessary because the dependency spec of tensorflow-gpu=2.1 is broken:
+  #   https://github.com/tensorflow/tensorflow/issues/40422
+  - tensorflow-estimator==2.1.0
 
   # NOTE: conda fails to calculate the dependency versions within docker-hub resource constraints.
   #       locally it takes > 30 min with > 3.7 GB mem.
