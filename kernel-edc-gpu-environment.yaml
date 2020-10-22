@@ -99,3 +99,14 @@ dependencies:
   - hdf5=1.10.5=nompi_h3c11f04_1104
   - fiona=1.8.9.post2=py37hdff7cfa_0
   - python=3.7.8=h6f2ec95_1_cpython
+
+
+  # rhea group
+  - wget
+  - imutils
+  - addict
+  - yapf
+  - lxml
+
+  # rhea group GPU only
+  - mmcv==0.5.9
