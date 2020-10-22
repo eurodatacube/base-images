@@ -144,8 +144,7 @@ RUN apt-get update && apt-get install -yq --no-install-recommends \
     python-dev \
     texlive-xetex \
     texlive-fonts-recommended \
-    texlive-generic-recommended \
-    texlive-fonts-extra \
+    texlive-plain-generic \
     tzdata \
     unzip \
     nano-tiny \
@@ -162,9 +161,11 @@ RUN update-alternatives --install /usr/bin/nano nano /usr/bin/nano-tiny 10
 RUN sed -i -e 's:(groups):(groups 2>/dev/null):' /etc/bash.bashrc
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends ffmpeg && \
-    rm -rf /var/lib/apt/lists/*
+    apt-get install -y --no-install-recommends ffmpeg dvipng cm-super && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
+
+# custom graphviz install
 RUN set -ex \
  && buildDeps=' \
     graphviz==0.11 \
