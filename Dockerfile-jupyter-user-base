@@ -197,6 +197,11 @@ RUN conda install --quiet --yes --freeze-installed \
     fix-permissions $CONDA_DIR && \
     fix-permissions /home/$NB_USER
 
+# Removed jupyterlab-git extension due to performance reasons
+# https://github.com/jupyterlab/jupyterlab-git/issues/703
+# https://github.com/jupyterlab/jupyterlab-git/issues/667
+# (it is already removed from the base image, but we didn't yet tag and build a new version)
+# UPDATE: jupyterlab-git 0.22.0 is supposed to fix the performance issue, need to test and possibly readd
 
 
 RUN cd /tmp && \
@@ -217,7 +222,7 @@ RUN jupyter labextension install @jupyterlab/github --no-build && \
     jupyter labextension install jupyter-leaflet --no-build && \
     jupyter labextension install jupyterlab-plotly --no-build && \
     jupyter labextension install @jupyterlab/geojson-extension --no-build && \
-    jupyter labextension install edc-jlab@0.5.3 --no-build && \
+    jupyter labextension install edc-jlab@0.5.4 --no-build && \
     jupyter lab build && \
     npm cache clean --force && \
     rm -rf $CONDA_DIR/share/jupyter/lab/staging && \
