@@ -50,7 +50,7 @@ dependencies:
   - xarray==0.16.0
   - zarr
   - psycopg2
-  - geopandas=0.6.1
+  - geopandas
   - geojson
   - ipyleaflet
   - cartopy
