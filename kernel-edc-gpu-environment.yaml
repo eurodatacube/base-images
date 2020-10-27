@@ -109,4 +109,5 @@ dependencies:
   - lxml
 
   # rhea group GPU only
-  - mmcv==0.5.9
+  - pip:
+    - mmcv==0.5.9
