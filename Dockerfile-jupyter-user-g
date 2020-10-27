@@ -1,4 +1,4 @@
-FROM eurodatacube/jupyter-user-base-g:0
+FROM eurodatacube/jupyter-user-base-g:2
 
 ARG DOCKER_TAG
 
