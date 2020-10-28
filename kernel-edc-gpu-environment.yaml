@@ -102,11 +102,12 @@ dependencies:
 
 
   # rhea group
-  - wget
   - imutils
   - addict
   - yapf
   - lxml
+  - pip:
+    - wget
 
   # rhea group GPU only
   - pip:
