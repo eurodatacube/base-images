@@ -1,0 +1,63 @@
+name: Docker
+
+on:
+  push:
+    tags:
+      - "user-*"
+
+jobs:
+  build_and_push:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Get the tag
+        id: get_image_tag
+        run: echo ::set-output name=TAG::${GITHUB_REF/refs\/tags\/user-/}
+
+      #- name: Build image
+      #  # TODO: cache-from? but which tag?
+      #  run: docker build . --file Dockerfile --tag $IMAGE_NAME:${{ steps.get_tag.TAG }} --build-arg DOCKER_TAG=${{ steps.get_tag.TAG }}
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      -
+        name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          file: Dockerfile-jupyter-user-g
+          tags: eurodatacube/jupyter-user-g:${{ steps.get_image_tag.TAG }}
+          build-args: |
+            DOCKER_TAG=${{ steps.get_image_tag.TAG }}
+          pull: true
+
+
+      #- name: Push image to GitHub Container Registry
+      #  run: |
+      #    IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
+
+      #    # Change all uppercase to lowercase
+      #    IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+
+      #    # Strip git ref prefix from version
+      #    VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+
+      #    # Strip "v" prefix from tag name
+      #    [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+
+      #    # Use Docker `latest` tag convention
+      #    [ "$VERSION" == "master" ] && VERSION=latest
+
+      #    echo IMAGE_ID=$IMAGE_ID
+      #    echo VERSION=$VERSION
+
+      #    docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
+      #    docker push $IMAGE_ID:$VERSION
