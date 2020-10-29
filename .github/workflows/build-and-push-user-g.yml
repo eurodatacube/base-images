@@ -1,0 +1,39 @@
+name: Build user-g
+
+on:
+  push:
+    tags:
+      - "user-*"
+
+jobs:
+  build_and_push:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Get the tag
+        id: get_image_tag
+        run: echo ::set-output name=TAG::${GITHUB_REF/refs\/tags\/user-/}
+
+      # NOTE: this step is necessary because otherwise the build-push-action can't push /o\
+      #       https://github.com/docker/build-push-action/issues/100#issuecomment-715352826
+      - uses: docker/setup-buildx-action@v1
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          pull: true
+          file: Dockerfile-jupyter-user-g
+          tags: eurodatacube/jupyter-user-g:${{ steps.get_image_tag.outputs.TAG }}
+          build-args: |
+            DOCKER_TAG=${{ steps.get_image_tag.outputs.TAG }}
