@@ -13,9 +13,20 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - id: foo
+        run: env
+      - id: get_image_tag_2
+        run: echo ::set-output name=TAG::${GITHUB_REF}
+
+      - id: get_image_tag_3
+        run: echo ::set-output name=TAG::${GITHUB_REF/refs\/tags\//}
+
       - name: Get the tag
         id: get_image_tag
         run: echo ::set-output name=TAG::${GITHUB_REF/refs\/tags\/user-/}
+
+      - name: Get the tag
+        run: false
 
       #- name: Build image
       #  # TODO: cache-from? but which tag?
