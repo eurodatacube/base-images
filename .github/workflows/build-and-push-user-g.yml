@@ -26,7 +26,10 @@ jobs:
         run: echo ::set-output name=TAG::${GITHUB_REF/refs\/tags\/user-/}
 
       - name: Get the tag
-        run: false
+        run: |
+          echo ${{ steps.get_image_tag_2.outputs.TAG }}
+          echo ${{ steps.get_image_tag_3.outputs.TAG }}
+          echo ${{ steps.get_image_tag.outputs.TAG }}
 
       #- name: Build image
       #  # TODO: cache-from? but which tag?
@@ -45,9 +48,9 @@ jobs:
         with:
           push: true
           file: Dockerfile-jupyter-user-g
-          tags: eurodatacube/jupyter-user-g:${{ steps.get_image_tag.TAG }}
+          tags: eurodatacube/jupyter-user-g:${{ steps.get_image_tag.outputs.TAG }}
           build-args: |
-            DOCKER_TAG=${{ steps.get_image_tag.TAG }}
+            DOCKER_TAG=${{ steps.get_image_tag.outputs.TAG }}
           pull: true
 
 
