@@ -1,4 +1,4 @@
-FROM eurodatacube/jupyter-user-base:0
+FROM eurodatacube/jupyter-user-base:1
 
 ARG DOCKER_TAG
 
@@ -38,18 +38,3 @@ json.dump({**json.load(open(kernel_json)), **update}, open(kernel_json, 'w'), in
 ADD jupyter-user/edc.py .
 RUN mv edc.py /opt/conda/envs/"${ENV_NAME}"/lib/python*/site-packages
 USER $NB_UID
-
-
-# Remove jupyterlab-git extension due to performance reasons
-# https://github.com/jupyterlab/jupyterlab-git/issues/703
-# https://github.com/jupyterlab/jupyterlab-git/issues/667
-# (it is already removed from the base image, but we didn't yet tag and build a new version)
-# UPDATE: jupyterlab-git 0.22.0 is supposed to fix the performance issue, test this when released
-# also update edc-jlab (move this to base image asap)
-RUN jupyter labextension uninstall @jupyterlab/git --no-build && \
-    jupyter labextension install edc-jlab@0.5.4 --no-build && \
-    jupyter lab build && \
-    npm cache clean --force && \
-    rm -rf $CONDA_DIR/share/jupyter/lab/staging && \
-    rm -rf /home/$NB_USER/.cache/yarn && \
-    rm -rf /home/$NB_USER/.node-gyp
