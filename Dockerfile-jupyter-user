@@ -4,37 +4,5 @@ ARG DOCKER_TAG
 
 ENV ENV_NAME=eurodatacube-${DOCKER_TAG}
 
-# install environment
-ADD kernel-edc-environment.yaml .
-RUN pip config set global.cache-dir false \
-    && conda env create --file kernel-edc-environment.yaml -n "${ENV_NAME}" \
-    && conda clean --all -f -y \
-    && pip config set global.cache-dir true \
-    && rm kernel-edc-environment.yaml
+RUN date > test
 
-USER root
-
-# Activate environment by default in interactive shells
-RUN echo "source activate $ENV_NAME" >> /etc/bash.bashrc
-
-# install kernel
-RUN conda run -n "${ENV_NAME}" python -m ipykernel install --name "EDC" --display-name "EDC ${DOCKER_TAG} (Python3)"
-
-# we need to patch the kernel.json to set up PATH :(
-# by default, the kernel bin dir is not included in PATH
-# when the kernel executes a notebook, but we need it for sentinelhub.config
-# https://github.com/jupyter/notebook/issues/4527
-# https://github.com/ipython/ipykernel/issues/395
-# since we already have that, also adding version to the metadata for edc-jlab
-RUN python3 -c "\
-import os; \
-import json; \
-env_name = os.environ['ENV_NAME']; \
-new_path = f'/opt/conda/envs/{env_name}/bin:/opt/conda/condabin:/opt/conda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'; \
-kernel_json = f'/usr/local/share/jupyter/kernels/edc/kernel.json'; \
-update = {'env': {'PATH': new_path}, 'metadata': {'version': '${DOCKER_TAG}'}}; \
-json.dump({**json.load(open(kernel_json)), **update}, open(kernel_json, 'w'), indent=4)"
-
-ADD jupyter-user/edc.py .
-RUN mv edc.py /opt/conda/envs/"${ENV_NAME}"/lib/python*/site-packages
-USER $NB_UID
