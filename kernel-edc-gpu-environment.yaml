@@ -105,7 +105,6 @@ dependencies:
 
 
   # rhea group
-  - imutils
   - addict
   - yapf
   - lxml
@@ -113,5 +112,6 @@ dependencies:
     - wget
 
   # rhea group GPU only
+  - imutils
   - pip:
     - mmcv==0.5.9
