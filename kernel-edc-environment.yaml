@@ -67,19 +67,25 @@ dependencies:
   - netcdf4
   - nteract-scrapbook
   - pip
-  - pip:
-    - git+https://github.com/eurodatacube/papermill-kubernetes-job-progess@1d0490d7df0d9e987a6baec4fa5e7d3cf3c3df63
 
   - xcube==0.6.0
   - xcube-sh==0.6.0
   - xcube_geodb==0.1.10
-  - pip:
-    - eo-learn==0.7.2
-    - git+https://github.com/dcs4cop/xcube-gen@104e310324f8affe4cd7f002efc04b8426b5bf8a
 
   # rhea group
   - addict
   - yapf
   - lxml
+
+
+  # NOTE: there can only be 1 pip block in a conda env
   - pip:
+    # edc
+    - git+https://github.com/eurodatacube/papermill-kubernetes-job-progess@1d0490d7df0d9e987a6baec4fa5e7d3cf3c3df63
+
+    # xcube
+    - eo-learn==0.7.2
+    - git+https://github.com/dcs4cop/xcube-gen@104e310324f8affe4cd7f002efc04b8426b5bf8a
+
+    # rhea group
     - wget
