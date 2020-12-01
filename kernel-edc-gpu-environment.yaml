@@ -49,7 +49,7 @@ dependencies:
   - fiona
   - rasterio
   - shapely
-  - xarray==0.16.0
+  - xarray
   - zarr
   - psycopg2
   - geopandas=0.6.1
