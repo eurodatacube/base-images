@@ -1,4 +1,4 @@
-name: Build user
+name: Build user base
 
 on:
   push:
