@@ -241,3 +241,8 @@ RUN fix-permissions /home/$NB_USER
 RUN jupyter kernelspec remove -f python3
 
 USER $NB_UID
+
+# Since 0.22.1, conda auto activates base via the default ~/.bashrc, which we don't want.
+# This is only relevant in non-edc contexts, because in these, we mount
+# something over the default home.
+RUN conda config --set auto_activate_base false                                                                               ~
