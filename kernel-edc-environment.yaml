@@ -69,7 +69,7 @@ dependencies:
 
   - xcube==0.6.1
   - xcube-sh==0.6.2
-  - xcube_geodb==0.1.11
+  - xcube_geodb==0.1.10
 
   # rhea group
   - addict
