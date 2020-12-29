@@ -84,7 +84,6 @@ dependencies:
 
     # xcube
     - eo-learn==0.7.2
-    - git+https://github.com/dcs4cop/xcube-gen@104e310324f8affe4cd7f002efc04b8426b5bf8a
 
     # rhea group
     - wget
