@@ -68,6 +68,7 @@ dependencies:
   - netcdf4
   - nteract-scrapbook
   - pip
+  - rioxarray  # useful for notebook jobs
 
   - xcube==0.5.1
   - xcube_geodb==0.1.10
