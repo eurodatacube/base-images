@@ -1,0 +1,35 @@
+FROM sentinelhub/crowd2train_segmentation:latest
+
+RUN pip install \
+    jupyterhub==1.2.1 \
+    git+https://github.com/eurodatacube/papermill-kubernetes-job-progess@1d0490d7df0d9e987a6baec4fa5e7d3cf3c3df63 \
+    papermill
+
+
+ARG NB_USER="jovyan"
+ARG NB_UID="1000"
+ARG NB_GID="100"
+
+RUN echo "auth requisite pam_deny.so" >> /etc/pam.d/su && \
+    sed -i.bak -e 's/^%admin/#%admin/' /etc/sudoers && \
+    sed -i.bak -e 's/^%sudo/#%sudo/' /etc/sudoers && \
+    useradd -m -s /bin/bash -N -u $NB_UID $NB_USER && \
+    chmod g+w /etc/passwd && \
+    chown $NB_USER $HOME
+
+# install edc module
+ADD jupyter-user/edc.py .
+RUN mv edc.py /usr/local/lib/python*/dist-packages
+
+# remove default kernel && install new one
+RUN jupyter kernelspec remove -f python3 && \
+    python3 -m ipykernel install --name "crowd2train" --display-name "EDC crowd2train_segmentation"
+
+ENV HOME=/home/$NB_USER
+
+WORKDIR $HOME
+
+USER $NB_UID
+
+
+
