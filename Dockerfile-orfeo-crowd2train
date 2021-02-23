@@ -1,4 +1,4 @@
-FROM sentinelhub/crowd2train_segmentation:latest
+FROM sentinelhub/crowd2train_segmentation:v0.2
 
 RUN pip install \
     jupyterhub==1.2.1 \
