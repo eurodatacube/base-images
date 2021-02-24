@@ -26,6 +26,8 @@ RUN jupyter kernelspec remove -f python3 && \
     python3 -m ipykernel install --name "crowd2train" --display-name "EDC crowd2train_segmentation"
 
 ENV HOME=/home/$NB_USER
+ENV LC_ALL=C.UTF-8
+ENV LANG=C.UTF-8
 
 WORKDIR $HOME
 
