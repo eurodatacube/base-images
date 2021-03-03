@@ -170,7 +170,9 @@ RUN set -ex \
 USER $NB_UID
 
 RUN conda install --quiet --yes --freeze-installed \
-    'widgetsnbextension=3.5.*' && \
+    'widgetsnbextension=3.5.*' \
+    # contains useful extension for jupyterlab \
+    nbdime \
     conda clean --all -f -y && \
     # Activate ipywidgets extension in the environment that runs the notebook server
     jupyter nbextension enable --py widgetsnbextension --sys-prefix && \
