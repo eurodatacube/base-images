@@ -209,7 +209,8 @@ ENV XDG_CACHE_HOME /home/$NB_USER/.cache/
 
 
 RUN python3 -m pip install --no-cache \
-    jupyterlab-drawio
+    jupyterlab-drawio \
+    https://github.com/eurodatacube/edc-jlab/blob/aa15e6041679d21841930bddb74555dff2f4f227/dist/edc_jlab-0.5.5-py3-none-any.whl?raw=true
 # Disabled for now because not yet compatible with jupyterlab 3:
 # @jupyterlab/github
 
@@ -217,7 +218,6 @@ RUN python3 -m pip install --no-cache \
 # NOTE: these extensions will probably be ported to be installable via pip in the future
 RUN jupyter labextension install jupyterlab-plotly --no-build && \
     jupyter labextension install @jupyterlab/geojson-extension --no-build && \
-    # jupyter labextension install edc-jlab@0.5.4 --no-build && \
     jupyter lab build && \
     npm cache clean --force && \
     rm -rf $CONDA_DIR/share/jupyter/lab/staging && \
