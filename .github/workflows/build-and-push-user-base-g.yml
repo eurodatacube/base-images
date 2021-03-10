@@ -7,6 +7,7 @@ on:
 
 jobs:
   build_and_push:
+    if: false  # disable for now
 
     runs-on: ubuntu-latest
 

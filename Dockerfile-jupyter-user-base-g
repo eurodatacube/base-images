@@ -4,8 +4,6 @@ ARG ROOT_CONTAINER=nvidia/cuda:10.1-devel-ubuntu18.04
 ARG BASE_CONTAINER=$ROOT_CONTAINER
 FROM $BASE_CONTAINER
 
-RUN false  # disable because not updated along with user-base due to cuda incompatibilities with ubuntu
-
 ARG NB_USER="jovyan"
 ARG NB_UID="1000"
 ARG NB_GID="100"
