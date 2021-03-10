@@ -23,7 +23,7 @@ dependencies:
   - 'numexpr=2.7.*'
   - 'pandas=1.2.*'
   - 'patsy=0.5.*'
-  - 'protobuf=3.13.*'
+  - 'protobuf=3.15.*'
   - 'pytables=3.6.*'
   - 'scikit-image=0.18.*'
   - 'scikit-learn=0.24.*'
@@ -65,13 +65,16 @@ dependencies:
   - papermill
   - s3fs
   - netcdf4
-  - nteract-scrapbook
+  - scrapbook
   - pip
   - rioxarray  # useful for notebook jobs
 
-  - xcube==0.6.1
-  - xcube-sh==0.6.2
-  - xcube_geodb==0.1.10
+  - xcube==0.7.0
+  - xcube-sh==0.7.0
+  - xcube_geodb==0.1.14
+  - xcube-cci==0.7.0
+  - xcube-cds==0.7.0
+  - nc-time-axis
 
   # rhea group
   - addict
@@ -84,8 +87,11 @@ dependencies:
     # edc
     - git+https://github.com/eurodatacube/papermill-kubernetes-job-progess@1d0490d7df0d9e987a6baec4fa5e7d3cf3c3df63
 
-    # xcube
-    - eo-learn==0.7.2
+    # NOTE: it's probably ok to update these further in the future
+    - eo-learn==0.8.1  # available on conda, but not latest version
+    - sentinelhub==3.2.0  # available on conda, but not latest version
+    - s2cloudless==1.5.0  # available on conda, but not latest version
 
     # rhea group
     - wget
+
