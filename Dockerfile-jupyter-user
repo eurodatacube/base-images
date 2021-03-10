@@ -1,4 +1,4 @@
-FROM eurodatacube/jupyter-user-base:3
+FROM eurodatacube/jupyter-user-base:4
 
 ARG DOCKER_TAG
 
@@ -7,7 +7,7 @@ ENV ENV_NAME=eurodatacube-${DOCKER_TAG}
 # install environment
 ADD kernel-edc-environment.yaml .
 RUN pip config set global.cache-dir false \
-    && conda env create --file kernel-edc-environment.yaml -n "${ENV_NAME}" \
+    && mamba env create --file kernel-edc-environment.yaml -n "${ENV_NAME}" \
     && conda clean --all -f -y \
     && pip config set global.cache-dir true \
     && rm kernel-edc-environment.yaml
