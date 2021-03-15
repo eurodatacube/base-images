@@ -146,7 +146,7 @@ USER root
 
 RUN apt-get update && apt-get install -yq --no-install-recommends \
     build-essential \
-    vim-tiny \
+    vim \
     git \
     inkscape \
     libsm6 \
