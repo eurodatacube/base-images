@@ -184,6 +184,9 @@ USER $NB_UID
 
 RUN conda install --quiet --yes --freeze-installed \
     'widgetsnbextension=3.5.*' \
+    # NOTE: jupyterlab_widgets is required by ipywidgets, but that installs it in the kernel,
+    #       but this package goes together with the jupyterlab server
+    'jupyterlab_widgets' \
     # contains useful extension for jupyterlab \
     # NOTE: nbdime jupyterlab extension not yet compatible with jupyterlab 3
     nbdime && \
