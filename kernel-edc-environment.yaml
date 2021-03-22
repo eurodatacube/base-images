@@ -17,7 +17,9 @@ dependencies:
   - 'dill=0.3.*'
   - 'h5py=3.1.*'
   - 'ipywidgets=7.6.*'
-  - 'ipympl=0.6.*'
+  # we don't install ipympl here because it would also need
+  # packages in the server env with additional dependencies
+  # and there doesn't seem to be sufficient reason for that
   - 'matplotlib-base=3.3.*'
   - 'numba=0.52.*'
   - 'numexpr=2.7.*'
