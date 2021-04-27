@@ -1,6 +1,5 @@
 name: kernel-edc-gpu
 channels:
-  - pytorch
   - conda-forge
   - defaults
 dependencies:
@@ -10,32 +9,34 @@ dependencies:
   # from jupyter/scipy-notebook
   - 'beautifulsoup4=4.9.*'
   - 'conda-forge::blas=*=openblas'
-  - 'bokeh=2.1.*'
+  - 'bokeh=2.2.*'
   - 'bottleneck=1.3.*'
-  - 'cloudpickle=1.5.*'
+  - 'cloudpickle=1.6.*'
   - 'cython=0.29.*'
-  - 'dask=2.20.*'
+  - 'dask==2021.2.*'
   - 'dill=0.3.*'
-  - 'h5py=2.10.*'
-  - 'hdf5=1.10.*'
-  - 'ipywidgets=7.5.*'
-  - 'ipympl=0.5.*'
-  - 'matplotlib-base=3.2.*'
-  - 'numba=0.48.*'
+  - 'h5py=3.1.*'
+  - 'ipywidgets=7.6.*'
+  # we don't install ipympl here because it would also need
+  # packages in the server env with additional dependencies
+  # and there doesn't seem to be sufficient reason for that
+  - 'matplotlib-base=3.3.*'
+  - 'numba=0.52.*'
   - 'numexpr=2.7.*'
-  - 'pandas=1.0.*'
+  - 'pandas=1.2.*'
   - 'patsy=0.5.*'
-  - 'protobuf=3.12.*'
+  - 'protobuf=3.15.*'
   - 'pytables=3.6.*'
-  - 'scikit-image=0.17.*'
-  - 'scikit-learn=0.23.*'
-  - 'scipy=1.5.*'
-  - 'seaborn=0.10.*'
+  - 'scikit-image=0.18.*'
+  - 'scikit-learn=0.24.*'
+  - 'scipy=1.6.*'
+  - 'seaborn=0.11.*'
   - 'sqlalchemy=1.3.*'
-  - 'statsmodels=0.11.*'
-  - 'sympy=1.6.*'
+  - 'statsmodels=0.12.*'
+  - 'sympy=1.7.*'
   - 'vincent=0.4.*'
   - 'xlrd=1.2.*'
+  # widgetnbextensions belongs to the jupyter env, not the kernel
 
   # edc platform
   - pyyaml
@@ -52,7 +53,7 @@ dependencies:
   - xarray
   - zarr
   - psycopg2
-  - geopandas=0.6.1
+  - geopandas
   - geojson
   - ipyleaflet
   - cartopy
@@ -66,55 +67,50 @@ dependencies:
   - papermill
   - s3fs
   - netcdf4
-  - nteract-scrapbook
+  - scrapbook
   - pip
   - rioxarray  # useful for notebook jobs
 
-  - xcube==0.5.1
-  - xcube_geodb==0.1.10
-
-  # gpu libs
-  - 'tensorflow-gpu=2.1*'
-  - keras-gpu
-  - pytorch
-  - torchvision
-  - cudatoolkit=10.1
-  # NOTE: this downgrade is necessary because the dependency spec of tensorflow-gpu=2.1 is broken:
-  #   https://github.com/tensorflow/tensorflow/issues/40422
-  - tensorflow-estimator==2.1.0
-
-  # NOTE: conda fails to calculate the dependency versions within docker-hub resource constraints.
-  #       locally it takes > 30 min with > 3.7 GB mem.
-  #       this is a known issue and conda refuses to fix it:
-  #       https://github.com/conda/conda/issues/5003
-  #       these requirements here are only meant to guide conda to one possible configuration, i.e.
-  #       please update/remove for future base image updates.
-  - pytorch==1.4.0=py3.7_cuda10.1.243_cudnn7.6.3_0
-  - keras-gpu=2.3.1=0
-  - torchvision=0.5.0=py37_cu101
-  - numpy=1.19.1=py37h7ea13bd_2
-  - ipython=7.18.1=py37hc6149b9_0
-  - hdf5=1.10.5=nompi_h3c11f04_1104
-  - fiona=1.8.9.post2=py37hdff7cfa_0
-  - python=3.7.8=h6f2ec95_1_cpython
-
+  - xcube==0.7.0
+  - xcube-sh==0.7.0
+  - xcube_geodb==0.1.15=pyhd8ed1ab_1
+  - xcube-cci==0.7.0
+  - xcube-cds==0.7.0
+  - nc-time-axis
 
   # rhea group
   - addict
   - yapf
   - lxml
-  - imutils
 
+  # gpu libs
+  # pytorch dependencies (according to iot-salzburg/gpu-jupyter)
+  - pyyaml
+  - mkl
+  - mkl-include
+  - setuptools
+  - cmake
+  - cffi
+  - typing
 
   # NOTE: there can only be 1 pip block in a conda env
   - pip:
     # edc
     - git+https://github.com/eurodatacube/papermill-kubernetes-job-progess@1d0490d7df0d9e987a6baec4fa5e7d3cf3c3df63
 
-    # xcube
-    - eo-learn==0.7.2
-    - git+https://github.com/dcs4cop/xcube-sh@95c89e6cb3fc3023582855a65894191d25b80a85
+    # NOTE: it's probably ok to update these further in the future
+    - eo-learn==0.8.1  # available on conda, but not latest version
+    - sentinelhub==3.2.0  # available on conda, but not latest version
+    - s2cloudless==1.5.0  # available on conda, but not latest version
 
     # rhea group
     - wget
-    - mmcv==0.5.9
+
+    # gpu
+    # install via pip because according to iot-salzburg/gpu-jupyter conda install leads to errors
+    - tensorflow==2.4.1
+    - keras
+    - torch
+    - torchvision
+    - torchaudio
+    - torchviz
