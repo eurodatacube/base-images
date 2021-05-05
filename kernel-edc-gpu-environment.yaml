@@ -9,19 +9,19 @@ dependencies:
   # from jupyter/scipy-notebook
   - 'beautifulsoup4=4.9.*'
   - 'conda-forge::blas=*=openblas'
-  - 'bokeh=2.2.*'
+  - 'bokeh=2.3.*'
   - 'bottleneck=1.3.*'
   - 'cloudpickle=1.6.*'
   - 'cython=0.29.*'
-  - 'dask==2021.2.*'
+  - 'dask==2021.4.*'
   - 'dill=0.3.*'
   - 'h5py=3.1.*'
   - 'ipywidgets=7.6.*'
   # we don't install ipympl here because it would also need
   # packages in the server env with additional dependencies
   # and there doesn't seem to be sufficient reason for that
-  - 'matplotlib-base=3.3.*'
-  - 'numba=0.52.*'
+  - 'matplotlib-base=3.4.*'
+  - 'numba=0.53.*'
   - 'numexpr=2.7.*'
   - 'pandas=1.2.*'
   - 'patsy=0.5.*'
@@ -31,7 +31,7 @@ dependencies:
   - 'scikit-learn=0.24.*'
   - 'scipy=1.6.*'
   - 'seaborn=0.11.*'
-  - 'sqlalchemy=1.3.*'
+  - 'sqlalchemy=1.4.*'
   - 'statsmodels=0.12.*'
   - 'sympy=1.7.*'
   - 'vincent=0.4.*'
@@ -71,11 +71,11 @@ dependencies:
   - pip
   - rioxarray  # useful for notebook jobs
 
-  - xcube==0.7.0
-  - xcube-sh==0.7.0
-  - xcube_geodb==0.1.15=pyhd8ed1ab_1
-  - xcube-cci==0.7.0
-  - xcube-cds==0.7.0
+  - xcube==0.8.0
+  - xcube-sh==0.8.0
+  - xcube_geodb==0.1.16
+  - xcube-cci==0.8.0
+  - xcube-cds==0.8.0
   - nc-time-axis
 
   # rhea group
@@ -84,6 +84,7 @@ dependencies:
   - lxml
 
   # gpu libs
+  - cudatoolkit=11.0
   # pytorch dependencies (according to iot-salzburg/gpu-jupyter)
   - pyyaml
   - mkl
@@ -99,8 +100,8 @@ dependencies:
     - git+https://github.com/eurodatacube/papermill-kubernetes-job-progess@1d0490d7df0d9e987a6baec4fa5e7d3cf3c3df63
 
     # NOTE: it's probably ok to update these further in the future
-    - eo-learn==0.8.1  # available on conda, but not latest version
-    - sentinelhub==3.2.0  # available on conda, but not latest version
+    - eo-learn==0.9.1  # available on conda, but not latest version
+    - sentinelhub==3.2.1  # available on conda, but not latest version
     - s2cloudless==1.5.0  # available on conda, but not latest version
 
     # rhea group
