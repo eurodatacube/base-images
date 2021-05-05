@@ -94,6 +94,10 @@ dependencies:
   - cffi
   - typing
 
+  # tensorflow doesn't support python 3.9 yet
+  # https://github.com/tensorflow/tensorflow/issues/44485
+  - python<3.9
+
   # NOTE: there can only be 1 pip block in a conda env
   - pip:
     # edc
