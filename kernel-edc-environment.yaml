@@ -71,11 +71,11 @@ dependencies:
   - pip
   - rioxarray  # useful for notebook jobs
 
-  - xcube==0.7.0
-  - xcube-sh==0.7.0
-  - xcube_geodb==0.1.15=pyhd8ed1ab_1
-  - xcube-cci==0.7.0
-  - xcube-cds==0.7.0
+  - xcube==0.8.0
+  - xcube-sh==0.8.0
+  - xcube_geodb==0.1.16
+  - xcube-cci==0.8.0
+  - xcube-cds==0.8.0
   - nc-time-axis
 
   # rhea group
@@ -90,8 +90,8 @@ dependencies:
     - git+https://github.com/eurodatacube/papermill-kubernetes-job-progess@1d0490d7df0d9e987a6baec4fa5e7d3cf3c3df63
 
     # NOTE: it's probably ok to update these further in the future
-    - eo-learn==0.8.1  # available on conda, but not latest version
-    - sentinelhub==3.2.0  # available on conda, but not latest version
+    - eo-learn==0.9.1  # available on conda, but not latest version
+    - sentinelhub==3.2.1  # available on conda, but not latest version
     - s2cloudless==1.5.0  # available on conda, but not latest version
 
     # rhea group
