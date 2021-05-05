@@ -84,6 +84,11 @@ dependencies:
   - lxml
 
 
+  # we delay the upgrade to python 3.9 for consistency with the gpu image
+  # and general afraidness
+  - python<3.9
+
+
   # NOTE: there can only be 1 pip block in a conda env
   - pip:
     # edc
