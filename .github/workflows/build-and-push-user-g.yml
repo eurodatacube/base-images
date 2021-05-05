@@ -11,6 +11,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-central-1
+
+      - id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
       - uses: actions/checkout@v2
 
       - name: Get the tag
@@ -33,6 +42,8 @@ jobs:
         with:
           push: true
           file: Dockerfile-jupyter-user-g
-          tags: eurodatacube/jupyter-user-g:${{ steps.get_image_tag.outputs.TAG }}
+          tags: |
+            ${{ steps.login-ecr.outputs.registry }}/eurodatacube-jupyter-user-g:${{ steps.get_image_tag.outputs.TAG }}
+            eurodatacube/jupyter-user-g:${{ steps.get_image_tag.outputs.TAG }}
           build-args: |
             DOCKER_TAG=${{ steps.get_image_tag.outputs.TAG }}
