@@ -84,7 +84,6 @@ dependencies:
   - lxml
 
   # gpu libs
-  - cudatoolkit=11.0
   # pytorch dependencies (according to iot-salzburg/gpu-jupyter)
   - pyyaml
   - mkl
