@@ -144,7 +144,8 @@ def setup_environment_variables():
 
     user_dot_env_path = "~/custom.env"
     user_dot_env = DotEnv(os.path.expanduser(user_dot_env_path))
-    user_dot_env.set_as_environment_variables(override=True)
+    # NOTE: override is not True by default in dotenv
+    user_dot_env.set_as_environment_variables()
     user_vars = user_dot_env.dict()
     if user_vars:
         info += (
