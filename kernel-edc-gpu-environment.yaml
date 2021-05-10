@@ -71,7 +71,7 @@ dependencies:
   - pip
   - rioxarray  # useful for notebook jobs
 
-  - xcube==0.8.0
+  - xcube==0.8.1
   - xcube-sh==0.8.0
   - xcube_geodb==0.1.16
   - xcube-cci==0.8.0
