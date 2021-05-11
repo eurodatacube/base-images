@@ -290,7 +290,9 @@ def _check_base_image_tag(tag: str) -> None:
 
 def _check_dependencies(dependencies: List[str]) -> None:
     envs_by_dependency = {
-        dependency: ", ".join(f"`{k}`" for k in os.environ if k.startswith(dependency))
+        dependency: ", ".join(
+            f"`{k}`" for k in os.environ if k.startswith(f"{dependency}_")
+        )
         for dependency in dependencies
     }
 
@@ -309,8 +311,6 @@ def _check_dependencies(dependencies: List[str]) -> None:
 
     for dep, env in envs_by_dependency.items():
         if not env:
-            info += (
-                f"\n-------------\nNo environment variables for **{dep}** found.\n"
-            )
+            info += f"\n-------------\nNo environment variables for **{dep}** found.\n"
 
     display(Markdown(info))
