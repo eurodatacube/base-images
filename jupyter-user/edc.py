@@ -216,13 +216,23 @@ def _append_nl(seq: List[str]) -> List[str]:
     return [f"{i}\n" for i in seq]
 
 
-def check_compatibility(tag: str) -> None:
-    display(HTML("""<script type="text/javascript">
+def check_compatibility(tag: str, dependencies: List[str] = None) -> None:
+    _check_base_image_tag(tag)
+    if dependencies:
+        _check_dependencies(dependencies)
+
+
+def _check_base_image_tag(tag: str) -> None:
+    display(
+        HTML(
+            """<script type="text/javascript">
         function toggle(id) {
             el = document.getElementById(id);
             el.style.display = el.style.display === "none" ? "block" : "none";
         }
-    </script>"""))
+    </script>"""
+        )
+    )
 
     current_image_tag = "user-" + os.environ["JUPYTER_IMAGE"].split(":", 2)[1]
     if current_image_tag == tag:
@@ -244,7 +254,8 @@ def check_compatibility(tag: str) -> None:
         current_image_release_msg = _get_release_message(current_image_tag)
 
         diff_lines = _calculate_diff_lines(
-            old=notebook_image_release_msg, new=current_image_release_msg,
+            old=notebook_image_release_msg,
+            new=current_image_release_msg,
         )
 
         major, minor, added, removed = _group_major_minor_added_remove(diff_lines)
@@ -265,9 +276,41 @@ def check_compatibility(tag: str) -> None:
             msg += format_section("Removed libraries", removed, len(removed))
 
         if major:
-            msg += format_section("Libraries with major version differences", major, int(len(major) / 2))
+            msg += format_section(
+                "Libraries with major version differences", major, int(len(major) / 2)
+            )
 
         if minor:
-            msg += format_section("Libraries with minor version differences", minor, int(len(minor) / 2))
+            msg += format_section(
+                "Libraries with minor version differences", minor, int(len(minor) / 2)
+            )
 
     display(HTML(msg))
+
+
+def _check_dependencies(dependencies: List[str]) -> None:
+    envs_by_dependency = {
+        dependency: ", ".join(f"`{k}`" for k in os.environ if k.startswith(dependency))
+        for dependency in dependencies
+    }
+
+    info = (
+        dedent(
+            """
+
+    ---------
+
+    The following environment variables are available:
+
+    """
+        )
+        + "".join(f"* {envs}\n" for envs in envs_by_dependency.values() if envs)
+    )
+
+    for dep, env in envs_by_dependency.items():
+        if not env:
+            info += (
+                f"\n-------------\nNo environment variables for **{dep}** found.\n"
+            )
+
+    display(Markdown(info))
