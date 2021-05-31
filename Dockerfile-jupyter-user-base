@@ -243,3 +243,7 @@ USER $NB_UID
 # This is only relevant in non-edc contexts, because in these, we mount
 # something over the default home.
 RUN conda config --system --set auto_activate_base false
+
+# Add custom edc jupyterlab config
+RUN mkdir /etc/jupyter/labconfig
+COPY ./jupyter-user/page_config.json /etc/jupyter/labconfig
