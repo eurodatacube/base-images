@@ -1,5 +1,5 @@
 # based on jupyter/base-notebook
-ARG ROOT_CONTAINER=nvidia/cuda:11.0.3-cudnn8-runtime-ubuntu20.04
+ARG ROOT_CONTAINER=nvidia/cuda:11.0.3-cudnn8-devel-ubuntu20.04
 
 ARG BASE_CONTAINER=$ROOT_CONTAINER
 FROM $BASE_CONTAINER
