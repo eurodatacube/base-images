@@ -247,3 +247,6 @@ RUN conda config --system --set auto_activate_base false
 # Add custom edc jupyterlab config
 RUN mkdir /etc/jupyter/labconfig
 COPY ./jupyter-user/page_config.json /etc/jupyter/labconfig
+
+
+COPY jupyter_lab_config.py /etc/jupyter
