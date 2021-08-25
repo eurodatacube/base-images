@@ -8,6 +8,8 @@ on:
 jobs:
   build_and_push:
 
+    if: false  # disable gpu since currently not updated
+
     runs-on: ubuntu-latest
 
     steps:
