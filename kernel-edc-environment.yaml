@@ -74,7 +74,7 @@ dependencies:
 
   - xcube==0.8.1
   - xcube-sh==0.8.0
-  - xcube_geodb==0.1.16
+  - xcube_geodb==1.0.0
   - xcube-cci==0.8.0
   - xcube-cds==0.8.0
   - nc-time-axis
