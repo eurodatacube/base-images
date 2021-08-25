@@ -71,6 +71,7 @@ dependencies:
   - scrapbook
   - pip
   - rioxarray  # useful for notebook jobs
+  - openpyxl  # recent versions of xlrd can't read xlsx
 
   - xcube==0.8.1
   - xcube-sh==0.8.0
