@@ -1,4 +1,4 @@
-name: kernel-edc
+name: kernel-edc-0.24.5
 channels:
   - conda-forge
   - defaults
@@ -46,11 +46,11 @@ dependencies:
   - python-dotenv
   - oauthlib
   - requests-oauthlib
-  - gdal
-  - fiona
+  - gdal=3.2.1
+  - fiona=1.8.18
   - rasterio
   - shapely
-  - xarray
+  - xarray=0.18.0
   - zarr
   - psycopg2
   - geopandas
