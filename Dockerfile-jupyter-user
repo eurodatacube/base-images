@@ -10,8 +10,8 @@ ADD kernel-edc-environment.yaml .
 #       in an env created by mamba fail due to conda claiming not finding some installed packages
 #       (ipympl==0.6, vincent==0.4)
 RUN pip config set global.cache-dir false \
-    && conda env create --file kernel-edc-environment.yaml -n "${ENV_NAME}" \
-    && conda clean --all -f -y \
+    && mamba env create --file kernel-edc-environment.yaml -n "${ENV_NAME}" \
+    && mamba clean --all -f -y \
     && pip config set global.cache-dir true \
     && rm kernel-edc-environment.yaml
 

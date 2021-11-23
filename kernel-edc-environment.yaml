@@ -5,69 +5,82 @@ channels:
 dependencies:
   # platform basic requirement
   - ipykernel
+  - cartopy
+  - geojson
+  - h5py
+  - ipyleaflet
+  - ipywidgets
+  - jupyterlab_widgets
+  - openblas
+  - protobuf
+  - psycopg2
+  - sympy
+  - widgetsnbextension
+  - xlrd
+
 
   # from jupyter/scipy-notebook
-  - altair
-  - 'beautifulsoup4'
-  - 'conda-forge::blas=*=openblas'
-  - 'bokeh'
-  - 'bottleneck'
-  - 'cloudpickle'
-  - 'cython'
-  - 'dask'
-  - 'dill'
-  - 'h5py'
-  - 'ipywidgets'
+  # - altair
+  # - 'beautifulsoup4'
+  # - 'conda-forge::blas=*=openblas'
+  # - 'bokeh'
+  # - 'bottleneck'
+  # - 'cloudpickle'
+  # - 'cython'
+  # - 'dask'
+  # - 'dill'
+  # - 'h5py'
+  # - 'ipywidgets'
   # we don't install ipympl here because it would also need
   # packages in the server env with additional dependencies
   # and there doesn't seem to be sufficient reason for that
-  - 'matplotlib-base'
-  - 'numba'
-  - 'numexpr'
-  - 'pandas'
-  - 'patsy'
-  - 'protobuf'
-  - 'pytables'
-  - 'scikit-image'
-  - 'scikit-learn'
-  - 'scipy'
-  - 'seaborn'
-  - 'sqlalchemy'
-  - 'statsmodels'
-  - 'sympy'
-  - 'xlrd'
+  #- 'matplotlib-base'
+  #- 'numba'
+  #- 'numexpr'
+  #- 'pandas'
+  #- 'patsy'
+  #- 'protobuf'
+  #- 'pytables'
+  #- 'scikit-image'
+  #- 'scikit-learn'
+  #- 'scipy'
+  #- 'seaborn'
+  #- 'sqlalchemy'
+  #- 'statsmodels'
+  #- 'sympy'
+  #- 'xlrd'
   # widgetnbextensions belongs to the jupyter env, not the kernel
 
   # edc platform
-  - pyyaml
-  - setuptools
-  - cmake
-  - cffi
-  - python-dotenv
-  - oauthlib
-  - requests-oauthlib
-  - gdal
-  - fiona
-  - rasterio
-  - shapely
-  - xarray
-  - zarr
-  - psycopg2
-  - geopandas
-  - geojson
-  - jupyterlab-geojson
-  - ipyleaflet
-  - cartopy
-  - tqdm
-  - lightgbm
-  - graphviz
-  - numba
-  - llvmlite
-  - descartes
+  #- pyyaml
+  #- setuptools
+  #- cmake
+  #- cffi
+  #- python-dotenv
+  #- oauthlib
+  #- requests-oauthlib
+  #- gdal
+  #- fiona
+  #- rasterio
+  #- shapely
+  #- xarray
+  #- zarr
+  #- psycopg2
+  #- geopandas
+  #- geojson
+  #- jupyterlab-geojson
+  #- ipyleaflet
+  #- cartopy
+  #- tqdm
+  #- lightgbm
+  #- graphviz
+  #- numba
+  #- llvmlite
+  #- descartes
   - nbdime
   - papermill
   - s3fs
-  - netcdf4
+  # - netcdf4
   - scrapbook
   - pip
   - rioxarray  # useful for notebook jobs
@@ -81,9 +94,9 @@ dependencies:
   - nc-time-axis
 
   # rhea group
-  - addict
-  - yapf
-  - lxml
+  # - addict
+  # - yapf
+  # - lxml
 
 
   # we delay the upgrade to python 3.9 for consistency with the gpu image
@@ -102,5 +115,5 @@ dependencies:
     - s2cloudless==1.5.0  # available on conda, but not latest version
 
     # rhea group
-    - wget
+    # - wget
 
