@@ -4,6 +4,32 @@ ARG DOCKER_TAG
 
 ENV ENV_NAME=eurodatacube-${DOCKER_TAG}
 
+# also install kernel 0.24.5
+ENV PREVIOUS_ENV_NAME=eurodatacube-0.24.5
+ADD kernel-edc-0.24.5-environment.yaml .
+RUN pip config set global.cache-dir false \
+    && mamba env create --file kernel-edc-0.24.5-environment.yaml -n "${PREVIOUS_ENV_NAME}" \
+    && mamba clean --all -f -y \
+    && pip config set global.cache-dir true \
+    && rm kernel-edc-0.24.5-environment.yaml
+
+USER root
+RUN conda run -n "${PREVIOUS_ENV_NAME}" python -m ipykernel install --name "EDC-0.24.5" --display-name "EDC 0.24.5 (Python3)"
+RUN python3 -c "\
+import os; \
+import json; \
+env_name = os.environ['PREVIOUS_ENV_NAME']; \
+new_path = f'/opt/conda/envs/{env_name}/bin:/home/jovyan/.local/bin:/opt/conda/condabin:/opt/conda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'; \
+kernel_json = f'/usr/local/share/jupyter/kernels/edc-0.24.5/kernel.json'; \
+update = {'env': {'PATH': new_path}, 'metadata': {'version': '0.24.5'}}; \
+json.dump({**json.load(open(kernel_json)), **update}, open(kernel_json, 'w'), indent=4)"
+ADD jupyter-user/edc.py .
+RUN mv edc.py /opt/conda/envs/"${PREVIOUS_ENV_NAME}"/lib/python*/site-packages
+USER $NB_UID
+
+
+
+
 # install environment
 ADD kernel-edc-environment.yaml .
 # NOTE: mamba env create is a lot faster than conda env create, but currently conda install commands
