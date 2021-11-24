@@ -47,7 +47,6 @@ dependencies:
     # edc
     - git+https://github.com/eurodatacube/papermill-kubernetes-job-progess@1d0490d7df0d9e987a6baec4fa5e7d3cf3c3df63
 
-    # NOTE: it's probably ok to update these further in the future
     - eo-learn==0.10.1  # available on conda, but not latest version
-    - sentinelhub
+    - sentinelhub==3.4.1  # also known as shpy
     - s2cloudless==1.5.0  # available on conda, but not latest version
