@@ -19,6 +19,7 @@ dependencies:
   - sympy
   - widgetsnbextension
   - xlrd
+  - graphviz
 
   # edc platform
   - nbdime
