@@ -51,6 +51,3 @@ dependencies:
     - eo-learn==0.10.1  # available on conda, but not latest version
     - sentinelhub==3.4.1  # also known as shpy
     - s2cloudless==1.5.0  # available on conda, but not latest version
-
-    # botocore downgrade until this is fixed: https://github.com/dcs4cop/xcube/issues/572
-    - botocore==1.20.106
