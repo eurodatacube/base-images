@@ -42,4 +42,16 @@ json.dump({**json.load(open(kernel_json)), **update}, open(kernel_json, 'w'), in
 
 ADD jupyter-user/edc.py .
 RUN mv edc.py /opt/conda/envs/"${ENV_NAME}"/lib/python*/site-packages
+
+# TODO: remove this after the next base image update
+# currently this is necessary because with the base image, we get this on gitlab clones:
+# "server certificate verification failed. CAfile: none CRLfile: none"
+# a letsencrypt certificate expired 2021-09, this might have something to do with this.
+RUN apt-get update --yes && \
+    apt-get install --yes --reinstall \
+    ca-certificates && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+
+
 USER $NB_UID
