@@ -13,6 +13,7 @@ dependencies:
   - ipyleaflet
   - ipywidgets
   - jupyterlab_widgets
+  - jupyterlab-geojson
   - openblas
   - protobuf
   - psycopg2
