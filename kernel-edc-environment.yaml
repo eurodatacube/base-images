@@ -55,9 +55,10 @@ dependencies:
     #       However since this pinning is handled by conda, pip will ignore it and update
     #       anyway, leading to an invalid version combination.
     #       https://github.com/aio-libs/aiobotocore/issues/904
-    #       To work around this, we pin the botocore version for now in the pip block too.
-    #       please remove ASAP.
-    - botocore==1.22.8
+    #       To work around this, we reinstall aiobotocore with pip to make it resolve dependencies
+    #       again. Note that this could break conda dependencies, but should lead to a consistent
+    #       set of versions of the boto libraries.
+    - aiobotocore
 
     - eo-learn==1.0.0  # available on conda, but not latest version
     - sentinelhub==3.4.4  # also known as shpy
