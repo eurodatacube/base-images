@@ -13,6 +13,7 @@ docker base images for JupyterHub environment
 * Tag new version in this repo (if the base image is to be updated, tag `base-X` and update `FROM` in user image)
 * Release on github.com and add the output of `conda list` as release notes
 * Update image version in `flux-config` (mostly `customer-operator` and `contribution-handler`, but simply just grep for old version)
+* Also update `IMAGE_TAG_LATEST_BUT_ONE` in `customer-operator` config
 * Update notebook bucket:  
   ```
   kubectl -n edc delete -f ~/git/flux-config/workloads/edc/update-notebooks-job.yaml
