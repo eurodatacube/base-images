@@ -247,7 +247,8 @@ WORKDIR "${HOME}"
 
 RUN python3 -m pip install --no-cache \
     jupyterlab-drawio \
-    https://github.com/eurodatacube/edc-jlab/blob/08f3159f7386280a5384b595f4138aa4520f7f9b/dist/edc_jlab-0.5.10-py3-none-any.whl?raw=true
+    https://github.com/eurodatacube/edc-jlab/blob/08f3159f7386280a5384b595f4138aa4520f7f9b/dist/edc_jlab-0.5.10-py3-none-any.whl?raw=true \
+    jupyter-server-proxy
 # Disabled for now because not yet compatible with jupyterlab 3:
 # @jupyterlab/github
 
