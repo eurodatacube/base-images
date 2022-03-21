@@ -217,21 +217,29 @@ USER root
 # fixing missing group IDs
 RUN sed -i -e 's:(groups):(groups 2>/dev/null):' /etc/bash.bashrc
 
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends ffmpeg dvipng cm-super && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
 
+
+RUN apt-get update --yes && \
+    apt-get install --yes --no-install-recommends \
+    # for cython: https://cython.readthedocs.io/en/latest/src/quickstart/install.html
+    build-essential \
+    # for latex labels
+    cm-super \
+    dvipng \
+    # for matplotlib anim
+    ffmpeg && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
 USER $NB_UID
 
-RUN conda install --quiet --yes --freeze-installed \
+RUN mamba install --quiet --yes --freeze-installed \
     'widgetsnbextension' \
     # NOTE: jupyterlab_widgets is required by ipywidgets, but that installs it in the kernel,
     #       but this package goes together with the jupyterlab server
     'jupyterlab_widgets' \
     # contains useful extension for jupyterlab \
     nbdime && \
-    conda clean --all -f -y
+    mamba clean --all -f -y
 
 # Removed jupyterlab-git extension due to performance reasons
 # https://github.com/jupyterlab/jupyterlab-git/issues/703
