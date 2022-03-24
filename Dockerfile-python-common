@@ -8,4 +8,7 @@ RUN python3 -m pip install --no-cache \
     requests \
     boto3 \
     click \
-    s3fs
+    s3fs \
+    fastapi \
+    uvicorn \
+    python-multipart
