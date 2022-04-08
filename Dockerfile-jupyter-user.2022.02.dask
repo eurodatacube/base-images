@@ -1,0 +1,3 @@
+FROM eurodatacube/jupyter-user:2022.02
+
+RUN pip install dask-labextension python-snappy

@@ -192,6 +192,7 @@ dependencies:
   - zipp=3.4.0=py_0
   - zlib=1.2.11=h516909a_1010
   - zstd=1.4.5=h6597ccf_2
+  - xcube_geodb=0.1.10
   - pip:
     - fastjsonschema==2.14.5
     - gsconfig-py3==1.0.8
