@@ -25,7 +25,7 @@ RUN conda run -n "race" python -m ipykernel install --name "race" --display-name
 RUN conda run -n "xcube_geodb" python -m ipykernel install --name "xcube_geodb" --display-name "dashboard xcube_geodb (Python3)"
 #no2ts has no ipykernel installed! RUN conda run -n "no2ts" python -m ipykernel install --name "no2ts" --display-name "dashboard no2ts (Python3)" 
 
+USER $NB_UID
+
 ADD S2PixelCloudDetector.py .
 RUN mv S2PixelCloudDetector.py /opt/conda/envs/race/lib/python3.7/site-packages/s2cloudless
-
-USER $NB_UID

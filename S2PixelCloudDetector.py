@@ -1,5 +1,7 @@
 """
 Module for making pixel-based classification on Sentinel-2 L1C imagery
+
+PATCHED VERSION!
 """
 
 import copy
