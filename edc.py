@@ -234,8 +234,16 @@ def _check_base_image_tag(tag: str) -> None:
         )
     )
 
-    current_image_tag = "user-" + os.environ["JUPYTER_IMAGE"].split(":", 2)[1]
-    if current_image_tag == tag:
+    try:
+        _, conda_env_version = os.environ.get("CONDA_DEFAULT_ENV", "").split("_", 2)
+    except ValueError:
+        conda_env_version = ""
+
+    current_image_tag = f"user-{conda_env_version}"
+
+    if not conda_env_version:
+        msg = "Unknown conda environment version."
+    elif current_image_tag == tag:
         msg = f"This notebook is compatible with this base image version ({tag})."
     else:
         msg = dedent(
