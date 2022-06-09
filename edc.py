@@ -4,10 +4,10 @@ import itertools
 import os
 import os.path
 import re
-import requests
 from textwrap import dedent
 from typing import List, Tuple
 
+import requests
 from IPython.display import display, Markdown, HTML
 from dotenv.main import find_dotenv, DotEnv
 
