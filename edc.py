@@ -239,7 +239,7 @@ def _check_base_image_tag(tag: str) -> None:
 
     match = re.search(version_string_re, os.environ.get("CONDA_DEFAULT_ENV", ""))
 
-    conda_env_version  = conda_env_version = match.group("version") if match else ""
+    conda_env_version = match.group("version") if match else ""
 
     current_image_tag = f"user-{conda_env_version}"
 
