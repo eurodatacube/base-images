@@ -5,7 +5,7 @@ import os
 import os.path
 import re
 from textwrap import dedent
-from typing import List, Tuple
+from typing import List, Tuple, Optional
 
 import requests
 from IPython.display import display, Markdown, HTML
@@ -222,6 +222,17 @@ def check_compatibility(tag: str, dependencies: List[str] = None) -> None:
         _check_dependencies(dependencies)
 
 
+def get_kernel_version() -> Optional[str]:
+    # something that smells like "-2022.02" OR "-2022.02.1"
+    version_string_re = r"-(?P<version>20\d\d\.\d\d+(\.\d+)?)$"
+
+    match = re.search(version_string_re, os.environ.get("CONDA_DEFAULT_ENV", ""))
+
+    conda_env_version = match.group("version") if match else ""
+
+    return f"user-{conda_env_version}" if conda_env_version else None
+
+
 def _check_base_image_tag(tag: str) -> None:
     display(
         HTML(
@@ -234,25 +245,18 @@ def _check_base_image_tag(tag: str) -> None:
         )
     )
 
-    # something that smells like "-2022.02" OR "-2022.02.1"
-    version_string_re = r"-(?P<version>20\d\d\.\d\d+(\.\d+)?)$"
+    current_kernel_version = get_kernel_version()
 
-    match = re.search(version_string_re, os.environ.get("CONDA_DEFAULT_ENV", ""))
-
-    conda_env_version = match.group("version") if match else ""
-
-    current_image_tag = f"user-{conda_env_version}"
-
-    if not conda_env_version:
+    if not current_kernel_version:
         msg = "Unknown conda environment version."
-    elif current_image_tag == tag:
+    elif current_kernel_version == tag:
         msg = f"This notebook is compatible with this base image version ({tag})."
     else:
         msg = dedent(
             f"""
             <h2>Base image difference detected</h2>
             <p>This notebook has been verified using the <a href="https://github.com/eurodatacube/base-images/releases/tag/{tag}" target="_blank">base image <strong>{tag}</strong></a>,
-            whereas you are currently running <a href="https://github.com/eurodatacube/base-images/releases/tag/{current_image_tag}" target="_blank">base image <strong>{current_image_tag}</strong></a>.</p>
+            whereas you are currently running <a href="https://github.com/eurodatacube/base-images/releases/tag/{current_kernel_version}" target="_blank">base image <strong>{current_kernel_version}</strong></a>.</p>
 
             <p>If you experience any problems, please consult the <a href="https://eurodatacube.com/marketplace" target="_blank">marketplace</a> for a more recent version of this notebook.</p>
 
@@ -261,7 +265,7 @@ def _check_base_image_tag(tag: str) -> None:
             """
         )
         notebook_image_release_msg = _get_release_message(tag)
-        current_image_release_msg = _get_release_message(current_image_tag)
+        current_image_release_msg = _get_release_message(current_kernel_version)
 
         diff_lines = _calculate_diff_lines(
             old=notebook_image_release_msg,
