@@ -1,6 +1,0 @@
-{
-    "disabledExtensions": {
-        "@jupyterlab/filebrowser-extension:share-file": true
-    }
-}
-

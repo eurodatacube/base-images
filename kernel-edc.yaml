@@ -1,4 +1,4 @@
-name: kernel-edc
+name: kernel-eoxhub
 channels:
   - conda-forge
   - defaults
@@ -25,29 +25,33 @@ dependencies:
   # edc platform
   - nbdime
   - papermill
+  - nb_conda_kernels  # needed for papermill to run nb_conda_kernels kernels
   - s3fs
   - scrapbook
   - pip
   - rioxarray  # useful for notebook jobs
   - openpyxl  # recent versions of xlrd can't read xlsx
+  - pystac
 
-
-  - xcube==0.10.1
-  - xcube-sh==0.9.3
-  - xcube_geodb==1.0.2
-  - xcube-cci==0.9.5
+  - xcube==1.0.1
+  - xcube-sh==0.10.1
+  - xcube_geodb==1.0.5
+  - xcube-cci==0.9.8
   - xcube-cds==0.9.1
+  - xcube-cmems
   - nc-time-axis
+  - jupyter-server-proxy==3.2.2
 
-  # we delay the upgrade to python 3.9 for consistency with the gpu image
-  # and general afraidness
-  - python<3.9
-
+  # right now numba doesn't seem to be compatible with numpy 1.24, but that might change soon
+  # https://github.com/numba/numba/issues/8464
+  # https://github.com/numba/numba/issues/8615
+  - numpy<1.24.0
 
   # NOTE: there can only be 1 pip block in a conda env
   - pip:
     # edc
-    - git+https://github.com/eurodatacube/papermill-kubernetes-job-progess@1d0490d7df0d9e987a6baec4fa5e7d3cf3c3df63
+    - papermill-kubernetes-job-progress==0.2
+    - eoxhub==0.0.2
 
     # NOTE: sentinelhub depends on boto3, which will trigger an update of boto and
     #       botocore because conda has installed an older version of botocore because
@@ -60,8 +64,12 @@ dependencies:
     #       set of versions of the boto libraries.
     - aiobotocore
 
-    - eo-learn==1.0.0  # available on conda, but not latest version
-    - sentinelhub==3.4.4  # also known as shpy
+    - eo-learn==1.4.1  # available on conda, but not latest version
+    - eo-grow==1.4.0  # note available on conda
+    - sentinelhub==3.8.4  # also known as shpy
     - s2cloudless==1.5.0  # available on conda, but not latest version
 
     - openeo
+
+    # NOTE: need panel in jupyter server and kernel, keep version in sync
+    - panel==0.14.1
