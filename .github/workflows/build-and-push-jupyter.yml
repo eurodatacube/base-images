@@ -47,3 +47,4 @@ jobs:
             eurodatacube/jupyter:${{ steps.get_image_tag.outputs.TAG }}
           build-args: |
             DOCKER_TAG=${{ steps.get_image_tag.outputs.TAG }}
+            BASE_IMAGE_TAG=${{ steps.get_image_tag.outputs.TAG }}
