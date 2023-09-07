@@ -1,9 +1,9 @@
-name: Build edc
+name: Build jupyter
 
 on:
   push:
     tags:
-      - "edc-*"
+      - "jupyter-*"
 
 jobs:
   build_and_push:
@@ -24,7 +24,7 @@ jobs:
 
       - name: Get the tag
         id: get_image_tag
-        run: echo ::set-output name=TAG::${GITHUB_REF/refs\/tags\/edc-/}
+        run: echo ::set-output name=TAG::${GITHUB_REF/refs\/tags\/jupyter-/}
 
       # NOTE: this step is necessary because otherwise the build-push-action can't push /o\
       #       https://github.com/docker/build-push-action/issues/100#issuecomment-715352826
@@ -41,9 +41,9 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          file: Dockerfile-edc
+          file: Dockerfile-jupyter
           tags: |
-            ${{ steps.login-ecr.outputs.registry }}/eurodatacube-edc:${{ steps.get_image_tag.outputs.TAG }}
-            eurodatacube/edc:${{ steps.get_image_tag.outputs.TAG }}
+            ${{ steps.login-ecr.outputs.registry }}/eurodatacube-jupyter:${{ steps.get_image_tag.outputs.TAG }}
+            eurodatacube/jupyter:${{ steps.get_image_tag.outputs.TAG }}
           build-args: |
             DOCKER_TAG=${{ steps.get_image_tag.outputs.TAG }}

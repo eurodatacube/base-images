@@ -1,3 +1,3 @@
 # base-images
 
-docker base images used on https://eurodatacube.com
+docker base-images used on https://eurodatacube.com

@@ -26,14 +26,14 @@ RUN mkdir /opt/conda/pkgs \
 
 USER $NB_UID
 
-ADD --chown=1000 kernel-edc.yaml /tmp
+ADD --chown=1000 kernel-jupyter.yaml /tmp
 
 RUN pip config set global.cache-dir false && \
     mamba env create \
       -p /opt/conda/envs/edc-default-${BASE_IMAGE_TAG} \
-      -f /tmp/kernel-edc.yaml && \
+      -f /tmp/kernel-jupyter.yaml && \
     mamba clean --all -f -y && \
-    rm /tmp/kernel-edc.yaml && \
+    rm /tmp/kernel-jupyter.yaml && \
     pip config set global.cache-dir true
 
 USER root
