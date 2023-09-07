@@ -1,0 +1,55 @@
+# For micromamba image documentation,
+# goto https://hub.docker.com/r/mambaorg/micromamba
+ARG MICROMAMBA_VERSION=1.3.1
+FROM mambaorg/micromamba:${MICROMAMBA_VERSION}
+
+ARG NEW_MAMBA_USER=xcube
+ARG NEW_MAMBA_USER_ID=1000
+ARG NEW_MAMBA_USER_GID=1000
+
+ARG INSTALL_PLUGINS=1
+
+ENV XCUBE_SH_VERSION=latest
+ENV XCUBE_CCI_VERSION=latest
+ENV XCUBE_CDS_VERSION=latest
+ENV XCUBE_CMEMS_VERSION=latest
+
+LABEL maintainer="xcube-team@brockmann-consult.de"
+LABEL name=xcube
+
+USER root
+RUN usermod "--login=${NEW_MAMBA_USER}" "--home=/home/${NEW_MAMBA_USER}" \
+        --move-home "-u ${NEW_MAMBA_USER_ID}" "${MAMBA_USER}" && \
+    groupmod "--new-name=${NEW_MAMBA_USER}" \
+             "-g ${NEW_MAMBA_USER_GID}" "${MAMBA_USER}" && \
+    # Update the expected value of MAMBA_USER for the
+    # _entrypoint.sh consistency check.
+    echo "${NEW_MAMBA_USER}" > "/etc/arg_mamba_user" && \
+    :
+RUN apt update -y && apt install -y git wget jq curl && apt autoclean && apt autoremove
+
+ENV MAMBA_USER=$NEW_MAMBA_USER
+
+USER $MAMBA_USER
+
+# Install xcube
+WORKDIR /app
+
+RUN git clone https://github.com/dcs4cop/xcube.git .
+RUN micromamba install -y -n base -f environment.yml \
+    && micromamba clean --all --yes
+
+ARG MAMBA_DOCKERFILE_ACTIVATE=1
+
+RUN python setup.py install
+
+RUN if [[ ${INSTALL_PLUGINS} == '1' ]]; then bash docker/install-xcube-plugin.sh xcube-sh ${XCUBE_SH_VERSION} release; fi;
+RUN if [[ ${INSTALL_PLUGINS} == '1' ]]; then bash docker/install-xcube-plugin.sh xcube-cci ${XCUBE_CCI_VERSION} release; fi;
+RUN if [[ ${INSTALL_PLUGINS} == '1' ]]; then bash docker/install-xcube-plugin.sh xcube-cds ${XCUBE_CDS_VERSION} release; fi;
+RUN if [[ ${INSTALL_PLUGINS} == '1' ]]; then bash docker/install-xcube-plugin.sh xcube-cmems ${XCUBE_CMEMS_VERSION} release; fi;
+RUN micromamba clean --all --force-pkgs-dirs --yes
+WORKDIR /home/$MAMBA_USER
+
+ENTRYPOINT ["/usr/local/bin/_entrypoint.sh"]
+
+CMD xcube --help
